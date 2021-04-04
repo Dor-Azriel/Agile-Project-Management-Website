@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="db" uuid="530da5dd-2033-47fc-b0b2-7da7b2cff383">
+    <data-source source="LOCAL" name="db" uuid="aca2ef56-2dbf-44a5-ae4b-01d5bb283b2e">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\noam0\PycharmProjects\mysite\db.sqlite3</jdbc-url>
+      <jdbc-url>jdbc:sqlite:C:\Users\user\PycharmProjects\mysite\db.sqlite3</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="CHECK1" uuid="8440ab0a-0320-4362-8c01-eeec38b88604">
+    <data-source source="LOCAL" name="identifier.sqlite" uuid="fcc16a60-8f0b-4c94-8b94-d5f6dcbcce62">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\noam0\PycharmProjects\mysite\CHECK1</jdbc-url>
+      <jdbc-url>jdbc:sqlite:identifier.sqlite</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
