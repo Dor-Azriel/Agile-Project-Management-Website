@@ -34,9 +34,16 @@ class Task(models.Model):
     TaskName = models.CharField(max_length=300,null=False)
     Description = models.CharField(max_length=500,null=True)
 
+class Sprint(models.Model):
+    SprintName = models.CharField(max_length=300,null=False)
+    Descripion = models.CharField(max_length=300,null=False)
+    StartTime = models.DateTimeField(null=False)
+    endTime = models.DateTimeField(null=False)
+    allTasks = models.ForeignKey(Task, on_delete=models.CASCADE)
+
 class project(models.Model):
     ProjectName = models.CharField(max_length=300, null=False)
     Description = models.CharField(max_length=500, null=True)
     startTime = models.DateField(null=False)
     endTime = models.DateField(null=False)
-    allTasks = models.ForeignKey(Task, on_delete=models.CASCADE)
+    allSprint = models.ForeignKey(Sprint, on_delete=models.CASCADE)
