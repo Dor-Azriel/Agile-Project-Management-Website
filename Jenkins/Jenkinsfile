@@ -1,5 +1,6 @@
-pipeline {
     def installed = fileExists 'bin/activate'
+
+pipeline {
     stages {
     if (!installed) {
         stage("Install Python Virtual Enviroment") {
@@ -9,7 +10,7 @@ pipeline {
     stage ("Get Latest Code") {
     checkout scm
     }
-    stage('Install Application Dependencies') {
+        stage('Install Application Dependencies') {
             sh '''
         source bin/activate
         pip install -r requirements.txt
