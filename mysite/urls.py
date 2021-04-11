@@ -16,11 +16,12 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path
-from pages.views import task_views, task_sorted_by_date,home_view
+from pages.views import task_views, task_sorted_by_date,home_view,task_sorted_by_done
 urlpatterns = [
     path('', home_view),
     path('tasks/', task_views),
     path('admin/', admin.site.urls),
-    path('sort/', task_sorted_by_date),
+    path('sort_date/', task_sorted_by_date),
+    path('sort_done/', task_sorted_by_done),
     # url
 ]

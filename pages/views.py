@@ -15,9 +15,12 @@ def task_views(request, *args, **kwargs):
 
 
 def task_sorted_by_date(request, *args, **kwargs):
-    obj = Task.objects.all()
-    obj = map(lambda x, y: min(x.startTime, y.startTime), obj )
+    obj = Task.objects.all().order_by("startTime");
+    return render(request, "task.html", {'tasks': obj})
 
-    return render(request, "task.html", {'tasks': obj, })
+
+def task_sorted_by_done(request, *args, **kwargs):
+    obj = Task.objects.all().order_by("workDone");
+    return render(request, "task.html", {'tasks': obj})
 
 

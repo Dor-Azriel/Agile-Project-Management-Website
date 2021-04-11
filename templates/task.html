@@ -6,8 +6,11 @@
     <h1>Tasks</h1>
 </head>
 <body>
-    <form action="http://127.0.0.1:8000/sort/" method="GET">
-        <input type="submit" value="sort">
+    <form action="http://127.0.0.1:8000/sort_date/" method="GET">
+        <input type="submit" value="sort by date">
+    </form>
+    <form action="http://127.0.0.1:8000/sort_done/" method="GET">
+        <input type="submit" value="sort by done">
     </form>
     <ul>
         {% for t in tasks %}
