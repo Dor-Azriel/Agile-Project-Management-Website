@@ -1,10 +1,12 @@
 pipeline {
-    agent { docker { image 'maven:3.3.3' } }
+    agent { docker { image 'python:3.7.0' } }
     stages {
-        stage('build') {
-            steps {
-                sh 'mvn --version'
-            }
+        stage('Install Application Dependencies') {
+            sh '''
+        source bin/activate
+        pip install -r /TEAM14/requirements.txt
+        deactivate
+       '''
         }
     }
 }
