@@ -3,11 +3,13 @@ from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
 class skill(models.Model):
-    languages=[(1,'Java'),(2,'C'),(3,'C++'),(4,'Python'),(5,'C#'),(6,'React'),(7,'HTML'),(8,'php'),(9,'DB')]
-    language=models.CharField(max_length=100,choices=languages)
-    levels = [(1,'Junior'),(2,'Senior'),(3,'expert')]
-    level=models.CharField(max_length=6,choices=levels,default=levels[0])
+    languages=[('JA','Java'),('CC','C'),('C+','C++'),('PY','Python'),('C#','C#'),('RE','React'),('HT','HTML'),('PH','php'),('DB','DB')]
+    language=models.CharField(max_length=2,default='JA',choices=languages,)
+    levels = [('JU','Junior'),('SE','Senior'),('EX','expert')]
+    level=models.CharField(max_length=2,choices=levels,default='JU',)
     def __str__(self):
+        return self.language+self.level
+    def is_upperclass(self):
         return self.language+self.level
 
 class SubTask(models.Model):
