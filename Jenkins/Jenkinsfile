@@ -4,7 +4,7 @@ pipeline {
         stage('Install Application Dependencies') {
             sh '''
         source bin/activate
-        pip install -r /TEAM14/requirements.txt
+        pip install -r requirements.txt
         deactivate
        '''
         }
