@@ -9,11 +9,7 @@ pipeline {
                 }
             }
             steps {
-                sh '''
-                  source bin/activate
-                  pip install -r requirements.txt
-                  deactivate
-                  '''
+                sh 'python -m py_compile sources/add2vals.py sources/calc.py'
             }
         }
         stage('Test') {
@@ -35,3 +31,23 @@ pipeline {
 }
 
 
+
+pipeline {
+    stages {
+    if (!installed) {
+        stage("Install Python Virtual Enviroment") {
+         sh 'virtualenv --no-site-packages .'
+        }
+    }
+    stage ("Get Latest Code") {
+    checkout scm
+    }
+        stage('Install Application Dependencies') {
+            sh '''
+        source bin/activate
+        pip install -r requirements.txt
+        deactivate
+       '''
+        }
+    }
+}
