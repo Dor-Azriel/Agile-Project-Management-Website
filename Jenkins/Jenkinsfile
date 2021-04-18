@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('build') {
             steps {
-            sh 'pip install django-jenkins'
+            sh 'pip install django:3.1.7'
             }
         }
     }
