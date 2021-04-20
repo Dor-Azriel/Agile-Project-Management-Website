@@ -1,5 +1,5 @@
 pipeline {
-    agent { docker { image 'python:3.7' } }
+    agent { docker { image 'python:3.7-alpine' } }
     triggers {
       githubPush()
   }
@@ -13,28 +13,26 @@ pipeline {
         }
         stage('setup'){
           steps{
-        if (fileExists('requirements/preinstall.txt')) {
-            sh """
-          . .env/bin/activate
-          pip install -r requirements/preinstall.txt
-             """
-}
-...
-sh """
-. .env/bin/activate
-pip install -r requirements/test.txt
-"""
-}
-stage("Unittests") {
-    sh """
-    . .env/bin/activate
-    ./manage.py test --noinput
-    """
-}
-          }
+            withEnv(["HOME=${env.WORKSPACE}"]){
 
+            dir('jenkins'){
+            sh 'python -m pip install -r requirements.txt'
+            }
+            echo 'hello'
+          }
+          }
         }
 
+          stage('Run Unit Tests') {
+                steps {
+            dir("./") {
+              withEnv(["HOME=${env.WORKSPACE}"]) {
+                sh "python -m coverage run manage.py test --tag=unit-test"
+
+              }
+            }
+          }
+            }
     }
 
 }
