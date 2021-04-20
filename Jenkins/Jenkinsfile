@@ -13,7 +13,9 @@ pipeline {
         }
         stage('setup'){
           steps{
-            sh 'python -m pip install -r requirements.txt --user'
+            sh 'virtualenv myEnv -p python3'
+            sh 'source myEnv/bin/activate'
+            sh 'python -m pip install -r requirements.txt'
             echo 'hello'
           }
 
