@@ -13,10 +13,14 @@ pipeline {
         }
         stage('setup'){
           steps{
-            sh 'virtualenv myEnv -p python3'
-            sh 'source myEnv/bin/activate'
-            sh 'python -m pip install -r requirements.txt'
-            echo 'hello'
+          sh """
+. .env/bin/activate
+if [[ -f requirements/preinstall.txt ]]; then
+    pip install -r requirements/preinstall.txt
+fi
+pip install -r requirements/test.txt
+./manage.py test --noinput
+"""
           }
 
         }
