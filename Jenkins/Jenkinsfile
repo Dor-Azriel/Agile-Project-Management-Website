@@ -16,7 +16,7 @@ pipeline {
             sh 'python -m pip install -r requirements.txt'
             echo 'hello'
           }
-          }
+
         }
 
     }
