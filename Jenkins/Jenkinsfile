@@ -13,14 +13,24 @@ pipeline {
         }
         stage('setup'){
           steps{
-          sh """
+        if (fileExists('requirements/preinstall.txt')) {
+            sh """
+          . .env/bin/activate
+          pip install -r requirements/preinstall.txt
+             """
+}
+...
+sh """
 . .env/bin/activate
-if [[ -f requirements/preinstall.txt ]]; then
-    pip install -r requirements/preinstall.txt
-fi
 pip install -r requirements/test.txt
-./manage.py test --noinput
 """
+}
+stage("Unittests") {
+    sh """
+    . .env/bin/activate
+    ./manage.py test --noinput
+    """
+}
           }
 
         }
