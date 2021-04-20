@@ -23,7 +23,7 @@ pipeline {
          stage('Run Unit Tests') {
                 steps {
               withEnv(["HOME=${env.WORKSPACE}"]) {
-                sh 'python -m Task run manage.py test --tag=unit-test'
+                sh 'python manage.py test'
 
             }
           }
