@@ -23,7 +23,7 @@ pipeline {
          stage('Run Unit Tests') {
                 steps {
               withEnv(["HOME=${env.WORKSPACE}"]) {
-                sh 'python manage.py jenkins --project-apps-tests  --enable-coverage --settings=myapp.settings.test'
+                sh 'python -m Task run manage.py test --tag=unit-test'
 
             }
           }
