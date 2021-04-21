@@ -21,7 +21,7 @@ pipeline {
          stage('Run Unit Tests') {
                 steps {
               withEnv(["HOME=${env.WORKSPACE}"]) {
-                sh 'python manage.py test'
+                sh 'coverage run --source='.' manage.py test work'
                 sh 'ls -l'
 
             }
