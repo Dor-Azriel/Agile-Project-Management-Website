@@ -47,3 +47,8 @@ class project(models.Model):
     startTime = models.DateField(null=False)
     endTime = models.DateField(null=False)
     allSprint = models.ForeignKey(Sprint, on_delete=models.CASCADE)
+
+class review(models.Model):
+    ProjectName = models.CharField(max_length=300, null=False)
+    Description = models.CharField(max_length=500, null=True)
+    TaskReview = models.ForeignKey(Task, on_delete=models.CASCADE)
