@@ -18,6 +18,7 @@ class SubTask(models.Model):
     encharge =models.ForeignKey(User,on_delete=models.CASCADE)
     lastUpdate = models.DateTimeField(null=True)
     cost = models.FloatField(null=False,default=0)
+    workDone = models.IntegerField(default=1, validators=[MaxValueValidator(100), MinValueValidator(1)])
     skillNeed= models.ForeignKey(skill,on_delete=models.CASCADE)
     TaskName = models.CharField(max_length=300, null=False)
     Description = models.CharField(max_length=500, null=True)
