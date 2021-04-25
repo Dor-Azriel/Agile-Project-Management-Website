@@ -1,0 +1,94 @@
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+*{
+  box-sizing: border-box;
+
+}
+body{
+  font-family: 'Roboto Light';
+  background: #ffffff;
+}
+#sideMenu{
+  background: #ddcef3;
+  max-width: 210px;
+    position: absolute;
+    width: 280px;
+    top: 0;
+    bottom: 0;
+
+
+  }
+#sideMenu nav{
+  padding-top: 100px;
+
+}
+#sideMenu a{
+  display: block;
+  color: #0b103b;
+  padding: 15px 30px;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+
+}
+#sideMenu a .active{
+  background: purple;
+  border-right: 5px solid green;
+}
+header{
+  margin-left: 210px;
+  padding: 20px;
+  background: #f3e5c6;
+
+}
+header a{
+  display: inline-block;
+  margin-left: 10px;
+}
+.content-area{
+    padding-top: 40px;
+  padding-left: 280px;
+
+}
+.content-area .table_task{
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    min-width: 400px;
+
+
+}
+.content-area .table_task thead tr{
+    background-color: #f3e5c6;
+    color: black;
+    text-align: left;
+    font-weight: bold;
+
+}
+.content-area .table_task th,
+.content-area .table_task td{
+    padding: 12px 15px;
+}
+.content-area .table_task tbody tr{
+    border-bottom: 1px solid cornsilk;
+
+}

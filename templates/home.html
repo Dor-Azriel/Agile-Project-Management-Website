@@ -2,10 +2,124 @@
         "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title>tmp home view</title>
-    <h1>Home view</h1>
-</head>
-<body>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-</body>
-</html>
+        <title></title>
+
+        <link rel="stylesheet" href="./127.0.0.1_files/fontawesome.min.css" integrity="sha384-wESLQ85D6gbsF459vf1CiZ2+rr+CsxRY0RpiF1tLlQpDnAgg6rwdsUF1+Ics2bni" crossorigin="anonymous">
+        <script async="" defer="" src="./127.0.0.1_files/buttons.js.download"></script>
+        <link rel="stylesheet" href="/static/styles/home.css">
+    <style type="text/css">
+        .content-area {
+        }
+    </style>
+</head>
+        <body>
+                <section id="sideMenu">
+                    <nav>
+                                <a href="/tasks" class="active"><i class="fas fa-tasks"></i>Tasks</a>
+                                <a href="#"><i class="fas fa-thumbtack"></i>Global</a>
+                                <a href="#">Project</a>
+                                <a href="#">Helpppp</a>
+
+
+                    </nav>
+                </section>
+
+                <header>
+                    <div>
+                        <h2>Wellcom</h2><h1><div class="user-name"></div></h1>
+                    </div>
+                    <div>
+                        <a href="#">תקציב</a>
+                        <a href="#">התראות</a>
+                        <a href="#">עובדים</a>
+                    </div>
+                </header>
+
+                <section class="content-area">
+                <form action="http://127.0.0.1:8000/sort_date/" method="GET">
+        <input type="submit" value="sort by date">
+    </form>
+    <form action="http://127.0.0.1:8000/sort_done/" method="GET">
+        <input type="submit" value="sort by done">
+    </form>
+
+   <table class="table_task">
+        <thead>
+                <tr>
+        <th>
+            startTime
+        </th>
+        <th>
+            endTime
+        </th>
+        <th>
+            inCharge
+        </th>
+        <th>
+            workDone
+        </th>
+        <th>
+            lastUpdate
+        </th>
+        <th>
+            cost
+        </th>
+        <th>
+            subTasks
+        </th>
+        <th>
+            TaskName
+        </th>
+        <th>
+            Description
+        </th>
+    </tr>
+         </thead>
+
+
+{% for t in tasks %}
+    <tbody><tr>
+        <td>
+            {{ t.startTime }}
+        </td>
+        <td>
+            {{ t.endTime }}
+        </td>
+        <td>
+            {{ t.inCharge }}
+        </td>
+        <td>
+            {{ t.workDone }}
+        </td>
+        <td>
+            {{ t.lastUpdate }}
+        </td>
+        <td>
+            {{ t.cost }}
+        </td>
+        <td>
+            {{ t.subTasks }}
+        </td>
+        <td>
+            {{ t.TaskName }}
+        </td>
+        <td>
+            {{ t.Description }}
+        </td>
+        <td>
+            add notess
+        </td>
+        <td>
+            add ++
+        </td>
+    </tr></tbody>
+
+                    {% endfor %}
+
+
+</table>
+                    </section>
+
+</body></html>

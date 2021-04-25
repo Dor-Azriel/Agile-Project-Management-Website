@@ -6,7 +6,8 @@ from django.shortcuts import HttpResponse
 
 # Create your views here.
 def home_view(request, *args, **kwargs):
-    return render(request, "home.html", {});
+    obj = Task.objects.order_by()
+    return render(request, "home.html", {'tasks': obj, });
 
 
 def task_views(request, *args, **kwargs):
