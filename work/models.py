@@ -53,3 +53,9 @@ class review(models.Model):
     ProjectName = models.CharField(max_length=300, null=False)
     Description = models.CharField(max_length=500, null=True)
     TaskReview = models.ForeignKey(Task, on_delete=models.CASCADE)
+
+class Conclusions(models.Model):
+    ProjectName = models.CharField(max_length=300, null=False)
+    Description = models.CharField(max_length=500, null=True)
+    UserCom =models.ForeignKey(User,on_delete=models.CASCADE)
+    TaskReview = models.ForeignKey(Task, on_delete=models.CASCADE)
