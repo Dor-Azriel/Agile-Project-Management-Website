@@ -28,7 +28,7 @@ pipeline {
             }
         stage('Send mail'){
            steps{
-           if(currentBuild.result!=NULL)
+           if(currentBuild.currentResult!=NULL)
             step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: 'dora4@ac.sce.ac.il', sendToIndividuals: true])
            }
         }
