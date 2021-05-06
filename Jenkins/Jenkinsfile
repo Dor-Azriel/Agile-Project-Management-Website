@@ -22,10 +22,14 @@ pipeline {
          stage('Run Unit Tests') {
                 steps {
               withEnv(["HOME=${env.WORKSPACE}"]) {
-                sh 'ls -l'
+                try{
                 sh 'python -m coverage run manage.py test work'
+                currentBuild.result = 'SUCCESS'
+                }
+                catch(any){
+                currentBuild.result = 'FAILURE'
                 step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: 'doraz4@ac.sce.ac.il', sendToIndividuals: true])
-
+                }
             }
           }
             }
