@@ -59,3 +59,9 @@ class Conclusions(models.Model):
     Description = models.CharField(max_length=500, null=True)
     UserCom =models.ForeignKey(User,on_delete=models.CASCADE)
     TaskReview = models.ForeignKey(Task, on_delete=models.CASCADE)
+
+
+
+
+
+

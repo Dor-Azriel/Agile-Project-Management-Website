@@ -29,4 +29,23 @@ class Migration(migrations.Migration):
                 ('question', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='polls.question')),
             ],
         ),
+
+        migrations.CreateModel(
+            name='Chat',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('massage_text', models.CharField(max_length=200)),
+                ('pub_date', models.DateTimeField(verbose_name='date published')),
+            ],
+        ),
+        migrations.CreateModel(
+            name='ChoiceM',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('choicem_text', models.CharField(max_length=200)),
+                ('votes', models.IntegerField(default=0)),
+                ('massages', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='polls.question')),
+            ],
+        ),
+
     ]
