@@ -3,26 +3,31 @@ from work.models import skill
 from work.models import review
 from work.models import Task
 from datetime import datetime
+from django.contrib.auth.models import User
+from work.models import SubTask
 
 class Testskill(TestCase):
-    def test_is_upperclass(self):
-        self.tmp = skill.objects.create(language="JA", level="JU")
 
-    def is_equal(self):
-        TestCase.failUnlessEqual(self.tmp.level, "JU")
-        TestCase.failUnlessEqual(self.tmp.language, "JA")
-        #TestCase.fail
+    def test_init(self):
+        self.tmp = skill.objects.create(level="JU",language="JA")
+
+    def test_is_equal(self):
+        tmp = skill.objects.create(level="JU", language="JA")
+        self.assertEqual(tmp.level,"JU")
+        self.assertEqual(tmp.language, "JA")
 
 class TestTask(TestCase):
-    def init(self):
+    def test_init(self):
         self.tmp=Task.objects.create(startTime=datetime(2020,4,4)
                                      ,endTime=datetime(2020,4,5)
-                                     ,inCharge=1,lastUpdate=datetime.now()
+                                     ,inCharge=User.objects.get(pk=1)
+                                     ,lastUpdate=datetime.now()
                                      ,cost=1000
-                                     , subTasks=1,
+                                     , subTasks=SubTask.objects.get(pk=1),
                                      TaskName="Test"
                                      ,Description="testing")
 
 class Testreview(TestCase):
-    def init(self):
-        self.new=review.objects.create(ProjectName="TEST",Testreview="TEST",TaskReview=1)
+    def test_init(self):
+        self.new=review.objects.create(ProjectName="TEST",Description="TEST"
+                                       ,TaskReview=Task.objects.get(pk=1))
