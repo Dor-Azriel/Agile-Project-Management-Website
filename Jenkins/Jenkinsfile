@@ -22,10 +22,8 @@ pipeline {
          stage('Run Unit Tests') {
                 steps {
               withEnv(["HOME=${env.WORKSPACE}"]) {
-                sh 'ls -l'
                 sh 'python -m coverage run manage.py test work'
-
-
+                currentBuild.result = 'SUCCESS'
             }
           }
             }
