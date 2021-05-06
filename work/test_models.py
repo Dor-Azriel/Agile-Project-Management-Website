@@ -5,6 +5,8 @@ from work.models import Task
 from datetime import datetime
 from django.contrib.auth.models import User
 from work.models import SubTask
+from work.models import Sprint
+from work.models import Conclusions
 
 class Testskill(TestCase):
 
@@ -61,6 +63,26 @@ class Testreview(TestCase):
         self.new=review.objects.create(ProjectName="TEST",Description="TEST"
                                        ,TaskReview=Task.objects.get(pk=1))
 
-# class TestSprint(TestCase):
-#     def test_init(self):
+class TestSprint(TestCase):
+    def test_init(self):
+        self.new=Sprint.objects.create(SprintName="1"
+                                      ,Descripion="Test"
+                                       ,StartTime=datetime(2020, 4, 4)
+                                       ,endTime=datetime(2020, 4, 5)
+                                       ,allTasks=Task.objects.get(pk=1)
+                                       )
 
+    def test_task(self):
+        new = Sprint.objects.create(SprintName="1"
+                                    , Descripion="Test"
+                                    , StartTime=datetime(2020, 4, 4)
+                                    , endTime=datetime(2020, 4, 5)
+                                    , allTasks=Task.objects.get(pk=1)
+                                    )
+        self.assertEqual(Task.objects.get(pk=1),new.allTasks)
+
+class TestConclusions(TestCase):
+    def test_init(self):
+        self.new=Conclusions.objects.create(ProjectName="Test",Description="test"
+                                            ,UserCom=User.objects.get(pk=1)
+                                            ,TaskReview=Task.objects.get(pk=1))
