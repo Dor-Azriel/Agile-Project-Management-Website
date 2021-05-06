@@ -24,11 +24,11 @@ pipeline {
               withEnv(["HOME=${env.WORKSPACE}"]) {
                 sh 'python -m coverage run manage.py test work'
             }
-            currentBuild.result = 'SUCCESS'
           }
             }
         stage('Send mail'){
            steps{
+           if(currentBuild.result!=NULL)
             step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: 'dora4@ac.sce.ac.il', sendToIndividuals: true])
            }
         }
