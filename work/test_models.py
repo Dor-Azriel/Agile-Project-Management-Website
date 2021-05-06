@@ -81,8 +81,3 @@ class TestSprint(TestCase):
                                     )
         self.assertEqual(Task.objects.get(pk=1),new.allTasks)
 
-class TestConclusions(TestCase):
-    def test_init(self):
-        self.new=Conclusions.objects.create(ProjectName="Test",Description="test"
-                                            ,UserCom=User.objects.get(pk=1)
-                                            ,TaskReview=Task.objects.get(pk=1))
