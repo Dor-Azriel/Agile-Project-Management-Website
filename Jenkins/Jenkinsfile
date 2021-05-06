@@ -25,13 +25,16 @@ pipeline {
                 sh 'python -m coverage run manage.py test'
             }
             step( currentBuild.result = 'SUCCESS')
+            post {
+            failure{
+             step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: 'doraz4@ac.sce.ac.il', sendToIndividuals: true])
+            }
+            }
           }
             }
         stage('Send mail'){
            steps{
-           if(currentBuild.result != 'SUCCESS'){
-            step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: 'doraz4@ac.sce.ac.il', sendToIndividuals: true])
-        }
+           // step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: 'doraz4@ac.sce.ac.il', sendToIndividuals: true])
         }
         }
 
