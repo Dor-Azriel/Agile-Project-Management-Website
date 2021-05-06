@@ -30,7 +30,7 @@ pipeline {
            steps{
             step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: 'dora4@ac.sce.ac.il', sendToIndividuals: true])
         }
-
+        }
 
     }
 
