@@ -16,6 +16,7 @@ pipeline {
             withEnv(["HOME=${env.WORKSPACE}"]){
             sh 'python -m pip install -r requirements.txt'
             sh 'pip install coverage '
+            currentBuild.result = 'SUCCESS'
           }
           }
         }
@@ -24,10 +25,7 @@ pipeline {
               withEnv(["HOME=${env.WORKSPACE}"]) {
                 sh 'python -m coverage run manage.py test work'
                 currentBuild.result = 'SUCCESS'
-                if(!currentBuild.requirements){
-                currentBuild.result = 'FAILURE'
-                step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: 'doraz4@ac.sce.ac.il', sendToIndividuals: true])
-                }
+
             }
           }
             }
