@@ -38,14 +38,29 @@ def dynamic_view(request, id):
     return render(request, "oneTask.html", {'t': task})
 
 
-def add_C(request, id):
-    task = get_object_or_404(Task, id=id)
-    if request == 'POST':
+# def add_C(request, id):
+#     task = get_object_or_404(Task, id=id)
+#     if request == 'POST':
+#         form = CommentForm(request.POST)
+#         if form.is_valid():
+#             comment = form.save(commit=False)
+#             comment.task = task
+#             # return task.get_absoulte_url
+#     else:
+#         CommentForm()
+#     return render(RequestContext(request), "addComment.html", {'t': task})
+
+
+def add_comment(request, id):
+    task = get_object_or_404(Task, id)
+    if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
             comment.task = task
+            comment.save()
+            return render(request, "oneTask.html", {'t': task})
             # return task.get_absoulte_url
     else:
         CommentForm()
-    return render(RequestContext(request), "addComment.html", {'t': task})
+    return render(request, "addComment.html", {'t': task})
