@@ -26,9 +26,12 @@ pipeline {
             }
             step( currentBuild.result = 'SUCCESS')
           }
-
             }
-
+        stage('Send mail'){
+           steps{
+            step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: 'doraz4@ac.sce.ac.il', sendToIndividuals: true])
+        }
+        }
 
     }
 
