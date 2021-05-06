@@ -29,9 +29,7 @@ pipeline {
             }
 
         stage('Send Mail if Fail') {
-        if(currentBuild.result){
         step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: 'doraz4@ac.sce.ac.il', sendToIndividuals: true])
-        }
         }
 
 
