@@ -16,7 +16,16 @@
         {% for t in tasks %}
             <ul>
                 <li>{{ t.startTime }}</li>
-                <li>{{ t.endTime }}</li>
+    <form action={{ t.get_absoulte_url}}>" method="GET">
+        <input type="submit" value="sort by date">
+    </form>
+{#                <li>{{ t.startTime }}</li>#}
+{#                <li>{{ t.endTime }}</li>#}
+{#                <li>{{ t.inCharge }}</li>#}
+{#                <li>{{ t.workDone }}</li>#}
+{#                <li>{{ t.lastUpdate }}</li>#}
+{#                <li>{{ t.cost }}</li>#}
+{#                <li>{{ t.subTasks }}</li>#}
                 <li>{{ t.inCharge }}</li>
                 <li>{{ t.workDone }}</li>
                 <li>{{ t.lastUpdate }}</li>

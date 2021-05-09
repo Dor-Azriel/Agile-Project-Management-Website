@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>task view</title>
+    <h1>Tasks</h1>
+</head>
+<body>
+    <form action="http://127.0.0.1:8000/tasks/" method="GET">
+        <input type="submit" value="back">
+    </form>
+    <ul>
+        {{ t.TaskName }}
+{#                <h2>a= href="{{  }}"</h2>>#}
+                <li>{{ t.startTime }}</li>
+                <li>{{ t.endTime }}</li>
+                <li>{{ t.inCharge }}</li>
+                <li>{{ t.workDone }}</li>
+                <li>{{ t.lastUpdate }}</li>
+                <li>{{ t.cost }}</li>
+                <li>{{ t.subTasks }}</li>
+                <li>{{ t.TaskName }}</li>
+                <li>{{ t.Description }}</li>
+            </ul>
+             <h1>---------------</h1>
+    </ul>
+        {% for comment in t.comments.all %}
+            <p>{{ comment.created }}</p>
+            <p>{{ comment.user }}</p>
+            <p>{{ comment.body }}</p>
+            <h1>---------------</h1>
+         {% endfor %}
+   <form action={{ t.add_comment }} method="POST">
+        {% csrf_token %}
+        <input type="submit" value="Leave A Comment">
+    </form>
+                     <p>Total Number Of Comments {{ t.comments.count }}</p>
+</body>
+</html>
