@@ -29,7 +29,7 @@ pipeline {
             }
         stage('Send mail'){
            steps{
-            step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: 'doraz4@ac.sce.ac.il', sendToIndividuals: true])
+            step([$class: 'Mailer',  recipients: 'doraz4@ac.sce.ac.il', sendToIndividuals: true])
         }
         }
 
