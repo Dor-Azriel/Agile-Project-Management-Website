@@ -15,17 +15,19 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include
 from pages.views import task_views,add_comment, task_sorted_by_date, home_view, task_sorted_by_done, task_detail,dynamic_view
 
 urlpatterns = [
     path('', home_view),
-    path('tasks/', task_views),
+    path('tasks/', task_views,name='tasks_views'),
     path('admin/', admin.site.urls),
     path('sort_date/', task_sorted_by_date),
     path('sort_done/', task_sorted_by_done),
     path('tasks/<int:id>/', dynamic_view, name="task_detail"),
     path('add-commento<int:id>', add_comment, name="add_comment"),
+   # path('', home_view),
+   # path('accounts/', include('django.contrib.auth.urls')),
     # url(r'^(?P<id>[-\w]+)/comment/$', add_comment, name="add_comment"),
     # re_path(r'^(?P<id>[-\w]+)/$', dynamic_view, name='task_detail'),
 
