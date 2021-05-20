@@ -23,6 +23,38 @@ class skill(models.Model):
     def is_upperclass(self):
         return self.language + self.level
 
+class project(models.Model):
+    ProjectName = models.CharField(max_length=300, null=False)
+    Description = models.CharField(max_length=500, null=True)
+    startTime = models.DateField(null=False)
+    endTime = models.DateField(null=False)
+
+
+class Sprint(models.Model):
+    SprintName = models.CharField(max_length=300, null=False)
+    Descripion = models.CharField(max_length=300, null=False)
+    StartTime = models.DateTimeField(null=False)
+    endTime = models.DateTimeField(null=False)
+    projectnum = models.ForeignKey(project, on_delete=models.CASCADE,null=True)
+
+class Task(models.Model):
+    slug = models.SlugField(max_length=250)
+    startTime = models.DateField(null=False)
+    endTime = models.DateField(null=False)
+    inCharge = models.ForeignKey(User, on_delete=models.CASCADE)
+    workDone = models.IntegerField(default=0, validators=[MaxValueValidator(100), MinValueValidator(1)])
+    lastUpdate = models.DateTimeField(null=False)
+    cost = models.FloatField(null=False, )
+    SpirntNum = models.ForeignKey(Sprint, on_delete=models.CASCADE,null=True)
+    TaskName = models.CharField(max_length=300, null=False)
+    Description = models.CharField(max_length=500, null=True)
+
+    def get_absoulte_url(self):
+        return reverse("task_detail", kwargs={"id": self.id})
+
+    def add_comment(self):
+        return reverse("add_comment", kwargs={"id": self.id})
+        # return f"/tasks/{self.id}/"
 
 class SubTask(models.Model):
     startTime = models.DateField(null=False)
@@ -34,42 +66,13 @@ class SubTask(models.Model):
     skillNeed = models.ForeignKey(skill, on_delete=models.CASCADE)
     TaskName = models.CharField(max_length=300, null=False)
     Description = models.CharField(max_length=500, null=True)
+    subTasks = models.ForeignKey(Task, on_delete=models.CASCADE)
 
 
-class Task(models.Model):
-    slug = models.SlugField(max_length=250)
-    startTime = models.DateField(null=False)
-    endTime = models.DateField(null=False)
-    inCharge = models.ForeignKey(User, on_delete=models.CASCADE)
-    workDone = models.IntegerField(default=1, validators=[MaxValueValidator(100), MinValueValidator(1)])
-    lastUpdate = models.DateTimeField(null=False)
-    cost = models.FloatField(null=False, )
-    subTasks = models.ForeignKey(SubTask, on_delete=models.CASCADE)
-    TaskName = models.CharField(max_length=300, null=False)
-    Description = models.CharField(max_length=500, null=True)
-
-    def get_absoulte_url(self):
-        return reverse("task_detail", kwargs={"id": self.id})
-
-    def add_comment(self):
-        return reverse("add_comment", kwargs={"id": self.id})
-        # return f"/tasks/{self.id}/"
 
 
-class Sprint(models.Model):
-    SprintName = models.CharField(max_length=300, null=False)
-    Descripion = models.CharField(max_length=300, null=False)
-    StartTime = models.DateTimeField(null=False)
-    endTime = models.DateTimeField(null=False)
-    allTasks = models.ForeignKey(Task, on_delete=models.CASCADE)
 
 
-class project(models.Model):
-    ProjectName = models.CharField(max_length=300, null=False)
-    Description = models.CharField(max_length=500, null=True)
-    startTime = models.DateField(null=False)
-    endTime = models.DateField(null=False)
-    allSprint = models.ForeignKey(Sprint, on_delete=models.CASCADE)
 
 class Comment(models.Model):
     task = models.ForeignKey(Task, related_name='comments',on_delete=models.CASCADE)

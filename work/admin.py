@@ -7,11 +7,29 @@ from .models import Sprint
 from .models import review
 from .models import Conclusions
 
+class SubTaskInline(admin.TabularInline):
+    model=SubTask
+
+class TaskAdmin(admin.ModelAdmin):
+        inlines =[ SubTaskInline,]
+
+class TaskInline(admin.TabularInline):
+    model=Task
+
+class SprintAdmin(admin.ModelAdmin):
+        inlines =[ TaskInline,]
+
+class SprintInline(admin.TabularInline):
+    model = Sprint
+
+
+class ProjectAdmin(admin.ModelAdmin):
+    inlines = [SprintInline, ]
 
 admin.site.register(skill)
 admin.site.register(SubTask)
-admin.site.register(Task)
-admin.site.register(Sprint)
-admin.site.register(project)
+admin.site.register(Task,TaskAdmin)
+admin.site.register(Sprint,SprintAdmin)
+admin.site.register(project,ProjectAdmin)
 admin.site.register(review)
 admin.site.register(Conclusions)

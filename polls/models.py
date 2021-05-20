@@ -49,10 +49,10 @@ class Chat(models.Model):
 
 class ChoiceM(models.Model):
     massages = models.ForeignKey(Chat, on_delete=models.DO_NOTHING, )
-    choice_text = models.CharField(max_length=200)
+    choiceM_text = models.CharField(max_length=200)
     votes = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.choice_text
+        return self.choiceM_text
 
 
