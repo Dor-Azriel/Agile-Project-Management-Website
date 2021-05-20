@@ -6,6 +6,8 @@ from work.forms import CommentForm
 from work.models import Task
 from django.shortcuts import HttpResponse
 from django.contrib import admin
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 
 
 # Create your views here.
@@ -16,10 +18,8 @@ def home_view(request, *args, **kwargs):
 def logd_view(request):
     username = request.user.groups.all()
     lists= request.user.is_superuser
-    #user = authenticate(request, username=username, password=password)
-    print(username)
     if (lists==True):
-        return render(request, "oneTask.html")
+        return HttpResponseRedirect(reverse('admin:index'))
     elif username[0].name == 'client':
         return render(request, "base.html")
     elif username[0].name == 'Developer':
