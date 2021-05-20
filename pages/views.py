@@ -1,16 +1,29 @@
 from django.core.mail.backends import console
 from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext
-
+from django.contrib.auth import authenticate,login
 from work.forms import CommentForm
 from work.models import Task
 from django.shortcuts import HttpResponse
+from django.contrib import admin
 
 
 # Create your views here.
 def home_view(request, *args, **kwargs):
     obj = Task.objects.order_by()
     return render(request, "base.html", {'tasks': obj, });
+
+def logd_view(request):
+    username = request.user.groups.all()
+    lists= request.user.is_superuser
+    #user = authenticate(request, username=username, password=password)
+    print(username)
+    if (lists==True):
+        return render(request, "oneTask.html")
+    elif username[0].name == 'client':
+        return render(request, "base.html")
+    elif username[0].name == 'Developer':
+        return render(request, "task.html")
 
 
 def task_views(request, *args, **kwargs):
