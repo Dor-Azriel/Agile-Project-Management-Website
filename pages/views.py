@@ -81,7 +81,6 @@ def add_comment(request, id):
         form = CommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
-            comment.task = task
             comment.save()
             return render(request, "oneTask.html", {'t': task})
             # return task.get_absoulte_url
