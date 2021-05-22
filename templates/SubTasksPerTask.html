@@ -1,22 +1,30 @@
 {% extends "Base.html" %}
 {% block content %}
-    <article class="media content-section">
+    {% for task in t %}
+        <article class="media content-section">
           <div class="media-body">
 
-            <h4><a class="article-title" >Tasks</a></h4>
+            <h4><a class="article-title" href="#">{{ task.TaskName }}</a></h4>
+               <a class="text-muted">{{ task.startTime|date:"F d, Y" }}</a>
+                <a class="text-muted"> - </a>
+              <a class="text-muted">{{ task.endTime|date:"F d, Y" }}</a>
+              <p></p><small class="text-muted">last update : {{ task.lastUpdate|date:"F d, Y" }}</small></p>
+            <p class="article-content">{{ task.Description }}</p>
 
               </div>
         </article>
+    {% endfor %}
+
     {% for task in tasks %}
         <article class="media content-section">
           <div class="media-body">
             <div class="article-metadata">
-              <a class="mr-2" href="#">{{ task.inCharge }}</a>
+              <a class="mr-2" href="#">{{ task.encharge }}</a>
               <small class="text-muted">{{ task.startTime|date:"F d, Y" }}</small>
                 <small class="text-muted"> - </small>
               <small class="text-muted">{{ task.endTime|date:"F d, Y" }}</small>
             </div>
-            <h4><a class="article-title" href="/Devlop/{{ task.id }}/">{{ task.TaskName }}</a></h4>
+            <h4><a class="article-title" href="#">{{ task.TaskName }}</a></h4>
             <p class="article-content">{{ task.Description }}</p>
               <div class="progress">
             <div class="progress-bar" role="progressbar"  aria-valuemin="1" aria-valuemax="100" aria-valuenow={{task.workDone}}>{{task.workDone}}%</div>

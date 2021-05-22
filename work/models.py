@@ -143,6 +143,8 @@ def Task_Update(sender,instance,**kwargs):
             dic.cost=tmp + instance.cost-tmpsub
             pre_save.send(sender=Sprint, instance=dic)
             Sprint.objects.filter(id=instance.SpirntNum.id).update(cost=tmp + instance.cost-tmpsub)
+        #if instance.workDone==100:
+
 pre_save.connect(Task_Update,sender=Task)
 
 def Sprint_Update(sender,instance,**kwargs):
