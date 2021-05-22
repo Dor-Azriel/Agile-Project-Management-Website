@@ -1,20 +1,5 @@
 {% extends "Base.html" %}
 {% block content %}
-    {% for task in t %}
-        <article class="media content-section">
-          <div class="media-body">
-
-            <h4><a class="article-title" href="#">{{ task.TaskName }}</a></h4>
-               <a class="text-muted">{{ task.startTime|date:"F d, Y" }}</a>
-                <a class="text-muted"> - </a>
-              <a class="text-muted">{{ task.endTime|date:"F d, Y" }}</a>
-              <p></p><small class="text-muted">last update : {{ task.lastUpdate|date:"F d, Y" }}</small></p>
-               <p></p><small class="text-muted">cost : {{ task.cost}}</small></p>
-            <p class="article-content">{{ task.Description }}</p>
-
-              </div>
-        </article>
-    {% endfor %}
 
     {% for task in tasks %}
         <article class="media content-section">
@@ -25,7 +10,7 @@
                 <small class="text-muted"> - </small>
               <small class="text-muted">{{ task.endTime|date:"F d, Y" }}</small>
             </div>
-            <h5><a class="article-title" href="/Devlop/{{  task.TaskID.id}}/{{ task.id }}/">{{ task.TaskName }}</a></h5>
+            <h5><a class="article-title" href="#">{{ task.TaskName }}</a></h5>
             <p class="article-content">{{ task.Description }}</p>
               <div class="progress">
             <div class="progress-bar" role="progressbar"  aria-valuemin="1" aria-valuemax="100" aria-valuenow={{task.workDone}}>{{task.workDone}}%</div>
@@ -33,4 +18,17 @@
               </div>
         </article>
     {% endfor %}
+
+    {% for task in t %}
+        <article class="media content-section">
+          <div class="media-body">
+
+            <h4><a class="article-title" href="#">{{ task.user }}</a></h4>
+              <p></p><small class="text-muted">Send : {{ task.created|date:"F d, Y" }}</small></p>
+            <p class="article-content">{{ task.body }}</p>
+
+              </div>
+        </article>
+    {% endfor %}
+
 {% endblock content %}

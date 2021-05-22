@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext
 from django.contrib.auth import authenticate,login
 from work.forms import CommentForm
-from work.models import Task,project,Sprint,SubTask
+from work.models import Task,project,Sprint,SubTask,Comment
 from django.shortcuts import HttpResponse
 from django.contrib import admin
 from django.urls import reverse
@@ -37,11 +37,15 @@ def ClientHome_views(request):
     # for proj in pro :
     #     tasks =
 def SubTasksPerTask_view(request,id):
-    obj= SubTask.objects.filter(subTasks=id)
+    obj= SubTask.objects.filter(TaskID=id)
     obj2=Task.objects.filter(id=id)
     return render(request, "SubTasksPerTask.html", {'tasks': obj,'t': obj2, })
 
-#def SprintDevlop_view(request):
+def SubTaskComment_view(request,id,my_id):
+    obj= SubTask.objects.filter(id=my_id)
+    obj2=Comment.objects.filter(Subtask=my_id)
+    return render(request, "SubTaskComment.html", {'tasks': obj,'t': obj2, })
+
 
 def task_views(request, *args, **kwargs):
     obj = Task.objects.order_by()
