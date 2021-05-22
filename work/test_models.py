@@ -56,7 +56,7 @@ class TestTask(TestCase):
                                   , subTasks=SubTask.objects.get(pk=1),
                                   TaskName="Test"
                                   , Description="testing")
-        self.assertEqual(SubTask.objects.get(pk=1), tmp.subTasks)
+        self.assertEqual(SubTask.objects.get(pk=1), tmp.TaskID)
 
 class Testreview(TestCase):
     def test_init(self):

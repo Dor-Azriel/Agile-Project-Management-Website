@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path,include
 from pages.views import task_views,add_comment, task_sorted_by_date, home_view, task_sorted_by_done, task_detail,dynamic_view,logd_view,DevlopHome_views,SubTasksPerTask_view
 from django.contrib.auth.views import LoginView
-
+from work.views import create_sub_task
 urlpatterns = [
     path('', home_view,name='home_view'),
     path('create_sub_task', create_sub_task, name='create_sub_task'),

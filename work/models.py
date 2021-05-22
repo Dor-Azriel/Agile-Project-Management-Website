@@ -26,7 +26,7 @@ class skill(models.Model):
 class project(models.Model):
     ProjectName = models.CharField(max_length=300, null=False)
     Description = models.CharField(max_length=500, null=True)
-    startTime = models.DateField(null=False)
+    startTime = models.DateField(null=False,auto_now=True)
     endTime = models.DateField(null=False)
     client = models.ForeignKey(User,on_delete=models.CASCADE)
     Budget = models.FloatField(null=False,default=0)
@@ -42,15 +42,14 @@ class Sprint(models.Model):
     projectnum = models.ForeignKey(project, on_delete=models.CASCADE)
     cost= models.FloatField(null=False,default=0 )
 
+
 class Task(models.Model):
-    slug = models.SlugField(max_length=250)
     startTime = models.DateField(null=False)
     endTime = models.DateField(null=False)
     inCharge = models.ForeignKey(User, on_delete=models.CASCADE)
     workDone = models.IntegerField(default=0, validators=[MaxValueValidator(100), MinValueValidator(0)])
     lastUpdate = models.DateTimeField(null=False)
     cost = models.FloatField(null=False,default=0 )
-    SpirntNum = models.ForeignKey(Sprint, on_delete=models.CASCADE)
     TaskName = models.CharField(max_length=300, null=False)
     Description = models.CharField(max_length=500, null=True)
 
@@ -60,6 +59,10 @@ class Task(models.Model):
     def add_comment(self):
         return reverse("add_comment", kwargs={"id": self.id})
         # return f"/tasks/{self.id}/"
+
+class Sprint_Task(models.Model):
+    SpirntId = models.ForeignKey(Sprint, on_delete=models.CASCADE)
+    TaskId=models.ForeignKey(Task, on_delete=models.CASCADE)
 
 class SubTask(models.Model):
     startTime = models.DateField(null=False)
@@ -71,11 +74,11 @@ class SubTask(models.Model):
     skillNeed = models.ForeignKey(skill, on_delete=models.CASCADE)
     TaskName = models.CharField(max_length=300, null=False)
     Description = models.CharField(max_length=500, null=True)
-    subTasks = models.ForeignKey(Task, on_delete=models.CASCADE)
+    TaskID = models.ForeignKey(Task, on_delete=models.CASCADE)
 
 
 class Comment(models.Model):
-    task = models.ForeignKey(Task, related_name='comments',on_delete=models.CASCADE)
+    Subtask = models.ForeignKey(SubTask, related_name='comments',on_delete=models.CASCADE)
     user = models.CharField(max_length=250)
     email = models.EmailField()
     body = models.TextField()
@@ -106,8 +109,8 @@ class Conclusions(models.Model):
 
 def subTaskMU(sender,instance,created,**kwargs):
     if created:
-        tmp = Task.objects.filter(id=instance.subTasks.id)[0].cost
-        Task.objects.filter(id=instance.subTasks.id).update(cost=tmp+instance.cost)
+        tmp = Task.objects.filter(id=instance.TaskID.id)[0].cost
+        Task.objects.filter(id=instance.TaskID.id).update(cost=tmp + instance.cost)
 
 post_save.connect(subTaskMU,sender=SubTask)
 
@@ -125,13 +128,13 @@ post_save.connect(SprintMU,sender=Sprint)
 
 def SubTask_Update(sender,instance,update_fields,**kwargs):
     if SubTask.objects.filter(id=instance.id):
-        tmp = Task.objects.filter(id=instance.subTasks.id)[0].cost
+        tmp = Task.objects.filter(id=instance.TaskID.id)[0].cost
         tmpsub=SubTask.objects.filter(id=instance.id)[0].cost
         if tmpsub !=instance.cost:
-            dic=Task.objects.filter(id=instance.subTasks.id)[0]
+            dic=Task.objects.filter(id=instance.TaskID.id)[0]
             dic.cost=cost=tmp + instance.cost-tmpsub
             pre_save.send(sender=Task, instance=dic)
-            Task.objects.filter(id=instance.subTasks.id).update(cost=tmp + instance.cost-tmpsub)
+            Task.objects.filter(id=instance.TaskID.id).update(cost=tmp + instance.cost - tmpsub)
 pre_save.connect(SubTask_Update,sender=SubTask)
 
 def Task_Update(sender,instance,**kwargs):
