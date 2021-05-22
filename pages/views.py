@@ -29,7 +29,8 @@ def logd_view(request):
 def DevlopHome_views(request):
     filt=request.user.id;
     obj = Task.objects.all().filter(inCharge=filt);
-    return render(request, "DevlopHome.html", {'tasks': obj})
+    obj2={'name':request.user.username}
+    return render(request, "DevlopHome.html", {'tasks': obj,'name':obj2})
 
 def ClientHome_views(request):
     pro= project.objects.all().filter(client=request.user.id)

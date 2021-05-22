@@ -2,11 +2,12 @@
 {% block content %}
     <article class="media content-section">
           <div class="media-body">
-
-            <h4><a class="article-title" >Tasks</a></h4>
+            {% for a in name %}
+            <h4><a class="article-title" > Hi {{ name.name }}, here is your to-do list :</a></h4>
 
               </div>
         </article>
+    {% endfor %}
     {% for task in tasks %}
         <article class="media content-section">
           <div class="media-body">
