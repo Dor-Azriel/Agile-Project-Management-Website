@@ -3,12 +3,12 @@ from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext
 from django.contrib.auth import authenticate,login
 from work.forms import CommentForm
-from work.models import Task
+from work.models import Task,project,Sprint
 from django.shortcuts import HttpResponse
 from django.contrib import admin
 from django.urls import reverse
 from django.http import HttpResponseRedirect
-
+from django.shortcuts import redirect
 
 # Create your views here.
 def home_view(request, *args, **kwargs):
@@ -21,9 +21,20 @@ def logd_view(request):
     if (lists==True):
         return HttpResponseRedirect(reverse('admin:index'))
     elif username[0].name == 'client':
-        return render(request, "base.html")
+        obj = Task.objects.all();
+        return render(request, "DevlopHome.html",{'tasks': obj})
     elif username[0].name == 'Developer':
-        return render(request, "task.html")
+        return redirect('DevlopHome_views')
+
+def DevlopHome_views(request):
+    filt=request.user.id;
+    obj = Task.objects.all().filter(inCharge=filt);
+    return render(request, "DevlopHome.html", {'tasks': obj})
+
+def ClientHome_views(request):
+    pro= project.objects.all().filter(client=request.user.id)
+    # for proj in pro :
+    #     tasks =
 
 
 def task_views(request, *args, **kwargs):

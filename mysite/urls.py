@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path,include
-from pages.views import task_views,add_comment, task_sorted_by_date, home_view, task_sorted_by_done, task_detail,dynamic_view,logd_view
+from pages.views import task_views,add_comment, task_sorted_by_date, home_view, task_sorted_by_done, task_detail,dynamic_view,logd_view,DevlopHome_views
 from django.contrib.auth.views import LoginView
 
 urlpatterns = [
@@ -28,7 +28,8 @@ urlpatterns = [
     path('sort_done/', task_sorted_by_done),
     path('tasks/<int:id>/', dynamic_view, name="task_detail"),
     path('add-commento<int:id>', add_comment, name="add_comment"),
-    path('accounts/profile/',logd_view)
+    path('accounts/profile/',logd_view),
+    path('Devlop/',DevlopHome_views,name='DevlopHome_views'),
    # path('', home_view),
    # path('accounts/', include('django.contrib.auth.urls')),
     # url(r'^(?P<id>[-\w]+)/comment/$', add_comment, name="add_comment"),
