@@ -116,8 +116,9 @@ post_save.connect(subTaskMU,sender=SubTask)
 
 def TaskMU(sender,instance,created,**kwargs):
     if created:
-        tmp = Sprint.objects.filter(id=instance.SpirntNum.id)[0].cost
-        Sprint.objects.filter(id=instance.SpirntNum.id).update(cost=tmp+instance.cost)
+        if Sprint_Task.objects.filter(TaskId=instance.id):
+            tmp = Sprint.objects.filter(id=Sprint_Task.objects.filter(TaskId=instance.id)[0].id)[0].cost
+            Sprint.objects.filter(id=Sprint_Task.objects.filter(TaskId=instance.id)[0].id).update(cost=tmp+instance.cost)
 post_save.connect(TaskMU,sender=Task)
 
 def SprintMU(sender,instance,created,**kwargs):
@@ -139,14 +140,15 @@ pre_save.connect(SubTask_Update,sender=SubTask)
 
 def Task_Update(sender,instance,**kwargs):
     if Task.objects.filter(id=instance.id):
-        tmp = Sprint.objects.filter(id=instance.SpirntNum.id)[0].cost
-        tmpsub = Task.objects.filter(id=instance.id)[0].cost
-        if tmpsub !=instance.cost:
-            dic=Sprint.objects.filter(id=instance.SpirntNum.id)[0]
-            dic.cost=tmp + instance.cost-tmpsub
-            pre_save.send(sender=Sprint, instance=dic)
-            Sprint.objects.filter(id=instance.SpirntNum.id).update(cost=tmp + instance.cost-tmpsub)
-        #if instance.workDone==100:
+        if Sprint_Task.objects.filter(TaskId=instance.id):
+            tmp = Sprint.objects.filter(id=Sprint_Task.objects.filter(TaskId=instance.id)[0].id)[0].cost
+            tmpsub = Task.objects.filter(id=instance.id)[0].cost
+            if tmpsub !=instance.cost:
+                dic=Sprint.objects.filter(id=Sprint_Task.objects.filter(TaskId=instance.id)[0].id)[0]
+                dic.cost=tmp + instance.cost-tmpsub
+                pre_save.send(sender=Sprint, instance=dic)
+                Sprint.objects.filter(id=Sprint_Task.objects.filter(TaskId=instance.id)[0].id).update(cost=tmp + instance.cost-tmpsub)
+            #if instance.workDone==100:
 
 pre_save.connect(Task_Update,sender=Task)
 
