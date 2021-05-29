@@ -9,6 +9,7 @@ from django.contrib import admin
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
+from Message.models import Messages
 
 # Create your views here.
 def home_view(request, *args, **kwargs):
@@ -25,6 +26,12 @@ def logd_view(request):
         return render(request, "DevlopHome.html",{'tasks': obj})
     elif username[0].name == 'Developer':
         return redirect('DevlopHome_views')
+
+def MessagePage_view(request):
+    list = Messages.objects.all().filter(reciver=request.user.id,readConf=False)
+    return render(request, "MessagesPage.html", {'tasks': list})
+
+
 
 def DevlopHome_views(request):
     filt=request.user.id;

@@ -1,0 +1,18 @@
+{% extends "Base.html" %}
+{% block content %}
+
+    {% for task in tasks %}
+        <article class="media content-section">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="#">{{ task.sender }}</a>
+              <small class="text-muted">{{ task.date|date:"F d, Y" }}</small>
+            </div>
+            <h5><a class="article-title" href="#">{{ task.Subject }}</a></h5>
+            <p class="article-content">{{ task.message }}</p>
+              </div>
+        </article>
+    {% endfor %}
+
+
+{% endblock content %}

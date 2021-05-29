@@ -16,13 +16,13 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path,include
-from pages.views import task_views,add_comment, task_sorted_by_date, home_view, task_sorted_by_done, task_detail,dynamic_view,logd_view,DevlopHome_views,SubTasksPerTask_view,SubTaskComment_view
+from pages.views import task_views,add_comment, task_sorted_by_date, home_view, task_sorted_by_done, task_detail,dynamic_view,logd_view,DevlopHome_views,SubTasksPerTask_view,SubTaskComment_view,MessagePage_view
 from django.contrib.auth.views import LoginView
 from work.views import create_sub_task
 urlpatterns = [
     path('', home_view,name='home_view'),
     path('create_sub_task', create_sub_task, name='create_sub_task'),
-    path('login/',LoginView.as_view(template_name='admin/login.html')),
+    path('login/',LoginView.as_view(template_name='admin/login.html'),),
     path('tasks/', task_views,name='tasks_views'),
     path('admin/', admin.site.urls),
     path('sort_date/', task_sorted_by_date),
@@ -30,9 +30,11 @@ urlpatterns = [
     path('tasks/<int:id>/', dynamic_view, name="task_detail"),
     path('add-commento<int:id>', add_comment, name="add_comment"),
     path('accounts/profile/',logd_view),
+    path('accounts/profile/Messages/',MessagePage_view),
     path('Devlop/',DevlopHome_views,name='DevlopHome_views'),
     path('Devlop/<int:id>/',SubTasksPerTask_view,name='SubTasksPerTask_view'),
     path('Devlop/<int:id>/<int:my_id>/', SubTaskComment_view, name='SubTaskComment_view'),
+    path('Devlop/Messages/',MessagePage_view,name='MessagePage_view'),
 
     # path('', home_view),
    # path('accounts/', include('django.contrib.auth.urls')),
