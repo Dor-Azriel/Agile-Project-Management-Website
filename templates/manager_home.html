@@ -1,0 +1,35 @@
+{% extends "Base.html" %}
+{% block content %}
+    <article class="media content-section">
+          <div class="media-body">
+            {% for a in name %}
+            <h4><a class="article-title" > Hi {{ name.name }}, here is your to-do list :</a></h4>
+
+              </div>
+        </article>
+    {% endfor %}
+    {% for p in projects %}
+        <article class="media content-section">
+            <p class="article-content">{{ p.ProjectName }}</p>
+            <p class="article-content">{{ p.Description }}</p>
+            <p class="article-content">{{ p.startTime }}</p>
+            <p class="article-content">{{ p.endTime }}</p>
+            <p class="article-content">{{ p.Budjet }}</p>
+            <p class="article-content">{{ p.currentBudgeSchedule }}</p>
+            <p class="article-content">{{ p.MoneySpends }}</p>
+        </article>
+    {% endfor %}
+    <article class="media content-section">
+            <a href="{% url 'sprint-create' %}">sprint-create</a>
+    </article>
+        <article class="media content-section">
+            <a href="{% url 'task-create' %}">task-create</a>
+    </article>
+        <article class="media content-section">
+            <a href="{% url 'comment-create' %}">comment-create</a>
+    </article>
+            <article class="media content-section">
+            <a href="{% url 'project-create' %}">project-create</a>
+    </article>
+{% endblock content %}
+
