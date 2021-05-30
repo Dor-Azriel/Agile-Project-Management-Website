@@ -1,0 +1,15 @@
+{% extends "Base.html" %}
+{% block content %}
+
+
+    <h2>{{ object.title }}</h2>
+<form action="{% url 'tasks_views' %}" method="POST">
+    {% csrf_token %}
+
+    <div class="fieldWrapper">
+        {{form}}
+    </div>
+    <input type="submit" name="Submit">
+</form>
+
+{% endblock content %}

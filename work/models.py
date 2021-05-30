@@ -2,7 +2,8 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
-from django.db.models.signals import post_save,pre_save
+from django.db.models.signals import post_save, pre_save
+
 
 # Create your models here.
 
@@ -23,15 +24,17 @@ class skill(models.Model):
     def is_upperclass(self):
         return self.language + self.level
 
+
 class project(models.Model):
     ProjectName = models.CharField(max_length=300, null=False)
     Description = models.CharField(max_length=500, null=True)
-    startTime = models.DateField(null=False,auto_now=True)
+    startTime = models.DateField(null=False, auto_now=True)
     endTime = models.DateField(null=False)
-    client = models.ForeignKey(User,on_delete=models.CASCADE)
-    Budget = models.FloatField(null=False,default=0)
-    currentBudgeSchedule=models.FloatField(null=False,default=0)
-    MoneySpends=models.FloatField(null=False,default=0)
+    client = models.ForeignKey(User, on_delete=models.CASCADE)
+    manager = models.ForeignKey(User, related_name="project_manager", on_delete=models.CASCADE)
+    Budget = models.FloatField(null=False, default=0)
+    currentBudgeSchedule = models.FloatField(null=False, default=0)
+    MoneySpends = models.FloatField(null=False, default=0)
 
 
 class Sprint(models.Model):
@@ -40,7 +43,7 @@ class Sprint(models.Model):
     StartTime = models.DateTimeField(null=False)
     endTime = models.DateTimeField(null=False)
     projectnum = models.ForeignKey(project, on_delete=models.CASCADE)
-    cost= models.FloatField(null=False,default=0 )
+    cost = models.FloatField(null=False, default=0)
 
 
 class Task(models.Model):
@@ -49,7 +52,7 @@ class Task(models.Model):
     inCharge = models.ForeignKey(User, on_delete=models.CASCADE)
     workDone = models.IntegerField(default=0, validators=[MaxValueValidator(100), MinValueValidator(0)])
     lastUpdate = models.DateTimeField(null=False)
-    cost = models.FloatField(null=False,default=0 )
+    cost = models.FloatField(null=False, default=0)
     TaskName = models.CharField(max_length=300, null=False)
     Description = models.CharField(max_length=500, null=True)
 
@@ -60,9 +63,14 @@ class Task(models.Model):
         return reverse("add_comment", kwargs={"id": self.id})
         # return f"/tasks/{self.id}/"
 
+class Sprint_Project(models.Model):
+    ProjectId = models.ForeignKey(project, on_delete=models.CASCADE)
+    SprintId = models.ForeignKey(Sprint, on_delete=models.CASCADE)
+
 class Sprint_Task(models.Model):
     SpirntId = models.ForeignKey(Sprint, on_delete=models.CASCADE)
-    TaskId=models.ForeignKey(Task, on_delete=models.CASCADE)
+    TaskId = models.ForeignKey(Task, on_delete=models.CASCADE)
+
 
 class SubTask(models.Model):
     startTime = models.DateField(null=False)
@@ -78,7 +86,7 @@ class SubTask(models.Model):
 
 
 class Comment(models.Model):
-    Subtask = models.ForeignKey(SubTask, related_name='comments',on_delete=models.CASCADE)
+    Subtask = models.ForeignKey(SubTask, related_name='comments', on_delete=models.CASCADE)
     user = models.CharField(max_length=250)
     email = models.EmailField()
     body = models.TextField()
@@ -91,6 +99,7 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.user
+
 
 
 
@@ -107,54 +116,71 @@ class Conclusions(models.Model):
     TaskReview = models.ForeignKey(Task, on_delete=models.CASCADE)
 
 
-def subTaskMU(sender,instance,created,**kwargs):
+def subTaskMU(sender, instance, created, **kwargs):
     if created:
         tmp = Task.objects.filter(id=instance.TaskID.id)[0].cost
         Task.objects.filter(id=instance.TaskID.id).update(cost=tmp + instance.cost)
 
-post_save.connect(subTaskMU,sender=SubTask)
 
-def TaskMU(sender,instance,created,**kwargs):
+post_save.connect(subTaskMU, sender=SubTask)
+
+
+def TaskMU(sender, instance, created, **kwargs):
     if created:
         if Sprint_Task.objects.filter(TaskId=instance.id):
             tmp = Sprint.objects.filter(id=Sprint_Task.objects.filter(TaskId=instance.id)[0].id)[0].cost
-            Sprint.objects.filter(id=Sprint_Task.objects.filter(TaskId=instance.id)[0].id).update(cost=tmp+instance.cost)
-post_save.connect(TaskMU,sender=Task)
+            Sprint.objects.filter(id=Sprint_Task.objects.filter(TaskId=instance.id)[0].id).update(
+                cost=tmp + instance.cost)
 
-def SprintMU(sender,instance,created,**kwargs):
+
+post_save.connect(TaskMU, sender=Task)
+
+
+def SprintMU(sender, instance, created, **kwargs):
     if created:
         tmp = project.objects.filter(id=instance.projectnum.id)[0].currentBudgeSchedule
-        project.objects.filter(id=instance.projectnum.id).update(currentBudgeSchedule=tmp+instance.cost)
-post_save.connect(SprintMU,sender=Sprint)
+        project.objects.filter(id=instance.projectnum.id).update(currentBudgeSchedule=tmp + instance.cost)
 
-def SubTask_Update(sender,instance,update_fields,**kwargs):
+
+post_save.connect(SprintMU, sender=Sprint)
+
+
+def SubTask_Update(sender, instance, update_fields, **kwargs):
     if SubTask.objects.filter(id=instance.id):
         tmp = Task.objects.filter(id=instance.TaskID.id)[0].cost
-        tmpsub=SubTask.objects.filter(id=instance.id)[0].cost
-        if tmpsub !=instance.cost:
-            dic=Task.objects.filter(id=instance.TaskID.id)[0]
-            dic.cost=cost=tmp + instance.cost-tmpsub
+        tmpsub = SubTask.objects.filter(id=instance.id)[0].cost
+        if tmpsub != instance.cost:
+            dic = Task.objects.filter(id=instance.TaskID.id)[0]
+            dic.cost = cost = tmp + instance.cost - tmpsub
             pre_save.send(sender=Task, instance=dic)
             Task.objects.filter(id=instance.TaskID.id).update(cost=tmp + instance.cost - tmpsub)
-pre_save.connect(SubTask_Update,sender=SubTask)
 
-def Task_Update(sender,instance,**kwargs):
+
+pre_save.connect(SubTask_Update, sender=SubTask)
+
+
+def Task_Update(sender, instance, **kwargs):
     if Task.objects.filter(id=instance.id):
         if Sprint_Task.objects.filter(TaskId=instance.id):
             tmp = Sprint.objects.filter(id=Sprint_Task.objects.filter(TaskId=instance.id)[0].id)[0].cost
             tmpsub = Task.objects.filter(id=instance.id)[0].cost
-            if tmpsub !=instance.cost:
-                dic=Sprint.objects.filter(id=Sprint_Task.objects.filter(TaskId=instance.id)[0].id)[0]
-                dic.cost=tmp + instance.cost-tmpsub
+            if tmpsub != instance.cost:
+                dic = Sprint.objects.filter(id=Sprint_Task.objects.filter(TaskId=instance.id)[0].id)[0]
+                dic.cost = tmp + instance.cost - tmpsub
                 pre_save.send(sender=Sprint, instance=dic)
-                Sprint.objects.filter(id=Sprint_Task.objects.filter(TaskId=instance.id)[0].id).update(cost=tmp + instance.cost-tmpsub)
-            #if instance.workDone==100:
+                Sprint.objects.filter(id=Sprint_Task.objects.filter(TaskId=instance.id)[0].id).update(
+                    cost=tmp + instance.cost - tmpsub)
+            # if instance.workDone==100:
 
-pre_save.connect(Task_Update,sender=Task)
 
-def Sprint_Update(sender,instance,**kwargs):
+pre_save.connect(Task_Update, sender=Task)
+
+
+def Sprint_Update(sender, instance, **kwargs):
     tmp = project.objects.filter(id=instance.projectnum.id)[0].currentBudgeSchedule
     tmpsub = Sprint.objects.filter(id=instance.id)[0].cost
-    if tmpsub !=instance.cost:
-        project.objects.filter(id=instance.projectnum.id).update(currentBudgeSchedule=tmp + instance.cost-tmpsub)
-pre_save.connect(Sprint_Update,sender=Sprint)
+    if tmpsub != instance.cost:
+        project.objects.filter(id=instance.projectnum.id).update(currentBudgeSchedule=tmp + instance.cost - tmpsub)
+
+
+pre_save.connect(Sprint_Update, sender=Sprint)

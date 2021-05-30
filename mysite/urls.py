@@ -16,12 +16,17 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path,include
-from pages.views import task_views,add_comment, task_sorted_by_date, home_view, task_sorted_by_done, task_detail,dynamic_view,logd_view,DevlopHome_views,SubTasksPerTask_view,SubTaskComment_view,MessagePage_view
+from pages.views import task_views, add_comment, task_sorted_by_date, home_view, task_sorted_by_done, task_detail, \
+    dynamic_view, logd_view, DevlopHome_views, SubTasksPerTask_view, SubTaskComment_view, MessagePage_view, \
+    manager_views
 from django.contrib.auth.views import LoginView
-from work.views import create_sub_task
+from work.views import add_comment, update_comment, update_task, add_task, add_sprint, update_sprint, update_project, \
+    add_project
+
 urlpatterns = [
     path('', home_view,name='home_view'),
-    path('create_sub_task', create_sub_task, name='create_sub_task'),
+    path('manager/', manager_views, name='manager'),
+    # path('create_sub_task', create_sub_task, name='create_sub_task'),
     path('login/',LoginView.as_view(template_name='admin/login.html'),),
     path('tasks/', task_views,name='tasks_views'),
     path('admin/', admin.site.urls),
@@ -34,6 +39,14 @@ urlpatterns = [
     path('Devlop/',DevlopHome_views,name='DevlopHome_views'),
     path('Devlop/<int:id>/',SubTasksPerTask_view,name='SubTasksPerTask_view'),
     path('Devlop/<int:id>/<int:my_id>/', SubTaskComment_view, name='SubTaskComment_view'),
+    path('comment/new/', add_comment.as_view() ,name='comment-create'),
+    path('comment/<int:pk>/update/', update_comment.as_view() ,name='comment-update'),
+    path('task/new/', add_task.as_view(), name='task-create'),
+    path('task/<int:pk>/update/', update_task.as_view(), name='task-update'),
+    path('sprint/new/', add_sprint.as_view(), name='sprint-create'),
+    path('sprint/<int:pk>/update/', update_sprint.as_view(), name='sprint-update'),
+    path('project/new/', add_project.as_view(), name='project-create'),
+    path('sprint/<int:pk>/update/', update_project.as_view(), name='project-update'),
     path('Devlop/Messages/',MessagePage_view,name='MessagePage_view'),
 
     # path('', home_view),

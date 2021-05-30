@@ -28,7 +28,9 @@
             <p class="article-content">{{ task.body }}</p>
 
               </div>
+             <a href="{% url 'comment-update' task.pk %}">Update Comment</a>
         </article>
     {% endfor %}
+    <a href="{% url 'comment-create' %}">Leave Comment</a>
 
 {% endblock content %}

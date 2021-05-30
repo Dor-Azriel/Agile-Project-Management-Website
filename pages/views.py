@@ -31,13 +31,18 @@ def MessagePage_view(request):
     list = Messages.objects.all().filter(reciver=request.user.id,readConf=False)
     return render(request, "MessagesPage.html", {'tasks': list})
 
+def manager_views(request):
+    filt=request.user.id;
+    obj = project.objects.all().filter(manager=filt);
+    obj2={'name':request.user.username}
+    return render(request, "manager_home.html", {'tasks': obj,'name':obj2})
 
 
 def DevlopHome_views(request):
     filt=request.user.id;
-    obj = Task.objects.all().filter(inCharge=filt);
+    obj = project.objects.all().filter(inCharge=filt);
     obj2={'name':request.user.username}
-    return render(request, "DevlopHome.html", {'tasks': obj,'name':obj2})
+    return render(request, "DevlopHome.html", {'projects': obj,'name':obj2})
 
 def ClientHome_views(request):
     pro= project.objects.all().filter(client=request.user.id)
