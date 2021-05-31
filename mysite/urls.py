@@ -16,16 +16,16 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path,include
-from pages.views import task_views, add_comment, task_sorted_by_date, home_view, task_sorted_by_done, task_detail, \
+from pages.views import task_views, task_sorted_by_date, home_view, task_sorted_by_done, task_detail, \
     dynamic_view, logd_view, DevlopHome_views, SubTasksPerTask_view, SubTaskComment_view, MessagePage_view, \
-    manager_views,ClientHome_views
+    manager_views, ClientHome_views, work_done
 from django.contrib.auth.views import LoginView
 from work.views import add_comment, update_comment, update_task, add_task, add_sprint, update_sprint
 
 urlpatterns = [
+    path('<int:id>', work_done,name='work_done'),
     path('', home_view,name='home_view'),
     path('manager/', manager_views, name='manager'),
-    # path('create_sub_task', create_sub_task, name='create_sub_task'),
     path('login/',LoginView.as_view(template_name='admin/login.html'),),
     path('tasks/', task_views,name='tasks_views'),
     path('admin/', admin.site.urls),
@@ -48,11 +48,4 @@ urlpatterns = [
     path('project/new/', add_sprint.as_view(), name='project-create'),
     path('project/<int:pk>/update/', update_sprint.as_view(), name='project-update'),
     path('Devlop/Messages/',MessagePage_view,name='MessagePage_view'),
-
-    # path('', home_view),
-   # path('accounts/', include('django.contrib.auth.urls')),
-    # url(r'^(?P<id>[-\w]+)/comment/$', add_comment, name="add_comment"),
-    # re_path(r'^(?P<id>[-\w]+)/$', dynamic_view, name='task_detail'),
-
-    # url
 ]
