@@ -12,6 +12,9 @@ from django.shortcuts import redirect
 from Message.models import Messages
 
 # Create your views here.
+from work.views import InputForm
+
+
 def home_view(request, *args, **kwargs):
     obj = Task.objects.order_by()
     return render(request, "base.html", {'tasks': obj, });
@@ -96,28 +99,17 @@ def dynamic_view(request, id):
     return render(request, "oneTask.html", {'t': task})
 
 
-# def add_C(request, id):
-#     task = get_object_or_404(Task, id=id)
-#     if request == 'POST':
-#         form = CommentForm(request.POST)
-#         if form.is_valid():
-#             comment = form.save(commit=False)
-#             comment.task = task
-#             # return task.get_absoulte_url
-#     else:
-#         CommentForm()
-#     return render(RequestContext(request), "addComment.html", {'t': task})
-
-
-def add_comment(request, id):
-    task = get_object_or_404(Task, id)
+def work_done(request, id):
     if request.method == 'POST':
-        form = CommentForm(request.POST)
+        form = InputForm(request.POST)
         if form.is_valid():
-            comment = form.save(commit=False)
-            comment.save()
-            return render(request, "oneTask.html", {'t': task})
-            # return task.get_absoulte_url
-    else:
-        CommentForm()
-    return render(request, "addComment.html", {'t': task})
+            print(id)
+            task = get_object_or_404(Task, id=id)
+            print(form.cleaned_data['work_done'])
+            task.workDone = form.cleaned_data['work_done']
+            task.save()
+    filt = request.user.id
+    f = InputForm()
+    obj = Task.objects.all().filter(inCharge=filt);
+    obj2 = {'name': request.user.username}
+    return render(request, "DevlopHome.html", {'tasks': obj, 'name': obj2, 'form': f})

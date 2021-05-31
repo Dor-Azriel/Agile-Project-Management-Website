@@ -9,27 +9,33 @@
         </article>
     {% endfor %}
     {% for p in projects %}
+
         <article class="media content-section">
-            <p class="article-content">{{ p.ProjectName }}</p>
+          <div class="media-body">
+            <h4><a class="article-title" href="#">{{ p.ProjectName }}</a></h4>
+               <a class="text-muted">{{ p.startTime|date:"F d, Y" }}</a>
+                <a class="text-muted"> - </a>
+              <a class="text-muted">{{ p.endTime|date:"F d, Y" }}</a>
             <p class="article-content">{{ p.Description }}</p>
-            <p class="article-content">{{ p.startTime }}</p>
-            <p class="article-content">{{ p.endTime }}</p>
-            <p class="article-content">{{ p.Budjet }}</p>
-            <p class="article-content">{{ p.currentBudgeSchedule }}</p>
-            <p class="article-content">{{ p.MoneySpends }}</p>
+            <p><a class="mr-2" >Project Budget - {{ p.Budget }} ₪ </a></p>
+            <p><a class="mr-2" >Project Current Budget Schedule - {{ p.currentBudgeSchedule }} ₪ </a></p>
+            <p><a class="mr-2" >Project Money Spends  - {{ p.p.MoneySpends }} ₪ </a></p>
+              </div>
         </article>
     {% endfor %}
-    <article class="media content-section">
-            <a href="{% url 'sprint-create' %}">sprint-create</a>
-    </article>
-        <article class="media content-section">
-            <a href="{% url 'task-create' %}">task-create</a>
-    </article>
-        <article class="media content-section">
-            <a href="{% url 'comment-create' %}">comment-create</a>
-    </article>
-            <article class="media content-section">
-            <a href="{% url 'project-create' %}">project-create</a>
-    </article>
+
+{#    <article class="media content-section">#}
+{#            <a href="{% url 'sprint-create' %}">sprint-create</a>#}
+{#    </article>#}
+{#        <article class="media content-section">#}
+{#            <a href="{% url 'task-create' %}">task-create</a>#}
+{#    </article>#}
+{#        <article class="media content-section">#}
+{#            <a href="{% url 'comment-create' %}">comment-create</a>#}
+{#    </article>#}
+{#            <article class="media content-section">#}
+{#            <a href="{% url 'project-create' %}">project-create</a>#}
+{#    </article>#}
+
 {% endblock content %}
 

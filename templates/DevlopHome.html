@@ -22,7 +22,16 @@
               <div class="progress">
             <div class="progress-bar" role="progressbar"  aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width: {{task.workDone}}%">{{task.workDone}}%</div>
               </div>
-              </div>
+              <p>
+                <form action="{% url 'work_done' task.id %}" method="POST">
+                    {% csrf_token %}
+                       <div class="fieldWrapper">
+                             {{form}}
+                        </div>
+                     <input type="submit" name="Submit">
+                 </form>
+                </div>
+              </p>
         </article>
     {% endfor %}
 {% endblock content %}
