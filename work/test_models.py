@@ -47,37 +47,5 @@ class TestTask(TestCase):
                                   , Description="testing")
         self.assertEqual(User.objects.get(pk=1),tmp.inCharge)
 
-    def test_subTask(self):
-        tmp = Task.objects.create(startTime=datetime(2020, 4, 4)
-                                  , endTime=datetime(2020, 4, 5)
-                                  , inCharge=User.objects.get(pk=1)
-                                  , lastUpdate=datetime(2020, 4, 4)
-                                  , cost=1000
-                                  , subTasks=SubTask.objects.get(pk=1),
-                                  TaskName="Test"
-                                  , Description="testing")
-        self.assertEqual(SubTask.objects.get(pk=1), tmp.TaskID)
 
-class Testreview(TestCase):
-    def test_init(self):
-        self.new=review.objects.create(ProjectName="TEST",Description="TEST"
-                                       ,TaskReview=Task.objects.get(pk=1))
-
-class TestSprint(TestCase):
-    def test_init(self):
-        self.new=Sprint.objects.create(SprintName="1"
-                                      ,Descripion="Test"
-                                       ,StartTime=datetime(2020, 4, 4)
-                                       ,endTime=datetime(2020, 4, 5)
-                                       ,allTasks=Task.objects.get(pk=1)
-                                       )
-
-    def test_task(self):
-        new = Sprint.objects.create(SprintName="1"
-                                    , Descripion="Test"
-                                    , StartTime=datetime(2020, 4, 4)
-                                    , endTime=datetime(2020, 4, 5)
-                                    , allTasks=Task.objects.get(pk=1)
-                                    )
-        self.assertEqual(Task.objects.get(pk=1),new.allTasks)
 
