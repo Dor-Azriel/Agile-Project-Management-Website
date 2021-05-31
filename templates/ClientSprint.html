@@ -2,12 +2,11 @@
 {% block content %}
     <article class="media content-section">
           <div class="media-body">
-            {% for a in name %}
-            <h4><a class="article-title" > Hi {{ name.name }}, here is your to-do list :</a></h4>
+
+            <h4><a class="article-title" >Sprints:</a></h4>
 
               </div>
         </article>
-    {% endfor %}
     {% for task in tasks %}
         <article class="media content-section">
           <div class="media-body">
@@ -20,7 +19,7 @@
             <h4><a class="article-title" href="/Devlop/{{ task.id }}/">{{ task.TaskName }}</a></h4>
             <p class="article-content">{{ task.Description }}</p>
               <div class="progress">
-            <div class="progress-bar" role="progressbar"  aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width: {{task.workDone}}%">{{task.workDone}}%</div>
+            <div class="progress-bar" role="progressbar"  aria-valuemin="1" aria-valuemax="100" aria-valuenow={{task.workDone}}>{{task.workDone}}%</div>
               </div>
               </div>
         </article>
