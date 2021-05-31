@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext
 from django.contrib.auth import authenticate,login
 from work.forms import CommentForm
-from work.models import Task,project,Sprint,SubTask,Comment
+from work.models import Task,project,Sprint,SubTask,Comment,Sprint_Project,Sprint_Task
 from django.shortcuts import HttpResponse
 from django.contrib import admin
 from django.urls import reverse
@@ -22,8 +22,7 @@ def logd_view(request):
     if (lists==True):
         return HttpResponseRedirect(reverse('admin:index'))
     elif username[0].name == 'client':
-        obj = Task.objects.all();
-        return render(request, "DevlopHome.html",{'tasks': obj})
+        return redirect('ClientHome_views')
     elif username[0].name == 'Developer':
         return redirect('DevlopHome_views')
 
@@ -45,9 +44,22 @@ def DevlopHome_views(request):
     return render(request, "DevlopHome.html", {'tasks': obj,'name':obj2})
 
 def ClientHome_views(request):
-    pro= project.objects.all().filter(client=request.user.id)
-    # for proj in pro :
-    #     tasks =
+    pro= project.objects.all().filter(client=request.user)
+    for p in pro:
+        p.Scheduled=p.currentBudgeSchedule/p.Budget*100
+        p.Balance = p.MoneySpends/p.Budget*100
+        if Task.objects.all().filter(projectnum=p.id,workDone=100).count() and Task.objects.all().filter(projectnum=p.id).count():
+            p.taskDone= Task.objects.all().filter(projectnum=p.id,workDone=100).count()/Task.objects.all().filter(projectnum=p.id).count()*100
+        else:
+            p.taskDone=0
+    obj2 = {'name': request.user.username}
+    return render(request, "ClientHome.html", {'projects': pro, 'name':obj2 })
+
+
+def ClientSprint_view(request,id):
+    spri=Sprint_Project.objects.all().filter(ProjectId=id)
+    return render(request, "ClientSprint.html", {'sprints': spri,})
+
 def SubTasksPerTask_view(request,id):
     obj= SubTask.objects.filter(TaskID=id)
     obj2=Task.objects.filter(id=id)

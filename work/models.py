@@ -55,6 +55,7 @@ class Task(models.Model):
     cost = models.FloatField(null=False, default=0)
     TaskName = models.CharField(max_length=300, null=False)
     Description = models.CharField(max_length=500, null=True)
+    projectnum = models.ForeignKey(project, on_delete=models.CASCADE)
 
     def get_absoulte_url(self):
         return reverse("task_detail", kwargs={"id": self.id})
