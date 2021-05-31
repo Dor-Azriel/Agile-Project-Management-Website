@@ -45,3 +45,6 @@ class add_project(CreateView, LoginRequiredMixin):
 class update_project(UpdateView, LoginRequiredMixin):
     model = project
     fields = '__all__'
+
+class InputForm(forms.Form):
+    work_done = forms.IntegerField(max_value=100, min_value=0)
