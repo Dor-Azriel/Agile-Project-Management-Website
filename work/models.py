@@ -36,6 +36,9 @@ class project(models.Model):
     currentBudgeSchedule = models.FloatField(null=False, default=0)
     MoneySpends = models.FloatField(null=False, default=0)
 
+    def get_absolute_url(self):
+        return reverse('manager', kwargs={})
+
 
 class Sprint(models.Model):
     SprintName = models.CharField(max_length=300, null=False)
@@ -44,6 +47,10 @@ class Sprint(models.Model):
     endTime = models.DateTimeField(null=False)
     projectnum = models.ForeignKey(project, on_delete=models.CASCADE)
     cost = models.FloatField(null=False, default=0)
+
+    def get_absolute_url(self):
+        return reverse('manager_views_projects', kwargs={'project_id': self.projectnum.id})
+
 
 
 class Task(models.Model):
@@ -179,12 +186,12 @@ def Task_Update(sender, instance, **kwargs):
 
 pre_save.connect(Task_Update, sender=Task)
 
-
 def Sprint_Update(sender, instance, **kwargs):
-    tmp = project.objects.filter(id=instance.projectnum.id)[0].currentBudgeSchedule
-    tmpsub = Sprint.objects.filter(id=instance.id)[0].cost
-    if tmpsub != instance.cost:
-        project.objects.filter(id=instance.projectnum.id).update(currentBudgeSchedule=tmp + instance.cost - tmpsub)
+    if project.objects.filter(id=instance.projectnum.id):
+        tmp = project.objects.filter(id=instance.projectnum.id)[0].currentBudgeSchedule
+        tmpsub = Sprint.objects.filter(id=instance.id)[0].cost
+        if tmpsub != instance.cost:
+            project.objects.filter(id=instance.projectnum.id).update(currentBudgeSchedule=tmp + instance.cost - tmpsub)
 
 
 pre_save.connect(Sprint_Update, sender=Sprint)

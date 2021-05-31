@@ -28,6 +28,8 @@ def logd_view(request):
         return redirect('ClientHome_views')
     elif username[0].name == 'Developer':
         return redirect('DevlopHome_views')
+    elif username[0].name == 'projectManager':
+        return redirect('manager')
 
 def MessagePage_view(request):
     list = Messages.objects.all().filter(reciver=request.user.id,readConf=False)
@@ -38,6 +40,26 @@ def manager_views(request):
     obj = project.objects.all().filter(manager=filt);
     obj2={'name':request.user.username}
     return render(request, "manager_home.html", {'projects': obj,'name':obj2})
+
+def manager_views_projects(request,project_id):
+    tasks = Task.objects.all().filter(projectnum =project_id)
+    sprints = Sprint.objects.all().filter(projectnum=project_id)
+    p = get_object_or_404(project, id=project_id)
+    print(project_id)
+    print("size")
+    print(tasks[0])
+    return render(request, "manager_project_view.html", {'tasks': tasks, 'sprints': sprints, 'p': p})
+
+def manager_views_sprints(request,sprint_id):
+    tasks = Sprint_Task.objects.all().filter(SpirntId =sprint_id)
+    sprint = get_object_or_404(Sprint, id=sprint_id)
+    return render(request, "manager_sprint_view.html", {'tasks': tasks, 'sprint': sprint})
+
+
+
+
+
+
 
 
 def DevlopHome_views(request):

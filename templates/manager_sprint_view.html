@@ -1,0 +1,69 @@
+{% extends "Base.html" %}
+{% block content %}
+
+
+        <article class="media content-section">
+          <div class="media-body">
+            <h4>{{ sprint.SprintName }}</h4>
+               <a class="text-muted">{{ sprint.StartTime|date:"F d, Y" }}</a>
+                <a class="text-muted"> - </a>
+              <a class="text-muted">{{ sprint.endTime|date:"F d, Y" }}</a>
+            <p class="article-content">{{ sprint.Description }}</p>
+            <p><a class="mr-2" >Sprint Cost - {{ sprint.cost }} ₪ </a></p>
+            <p><a class="mr-2" >Project Number  - {{ sprint.projectnum }} ₪ </a></p>
+              </div>
+        </article>
+
+
+          <h4>Tasks</h4>
+{% for task in tasks %}
+        <article class="media content-section">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="#">{{ task.inCharge }}</a>
+              <small class="text-muted">{{ task.startTime|date:"F d, Y" }}</small>
+                <small class="text-muted"> - </small>
+              <small class="text-muted">{{ task.endTime|date:"F d, Y" }}</small>
+            </div>
+            <h4><a class="article-title" href="/Devlop/{{ task.id }}/">{{ task.TaskName }}</a></h4>
+            <p class="article-content">{{ task.Description }}</p>
+              <div class="progress">
+            <div class="progress-bar" role="progressbar"  aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width: {{task.workDone}}%">{{task.workDone}}%</div>
+              </div>
+              <p>
+                <form action="{% url 'work_done' task.id %}" method="POST">
+                    {% csrf_token %}
+                       <div class="fieldWrapper">
+                             {{form}}
+                        </div>
+                     <input type="submit" name="Submit">
+                 </form>
+                </div>
+              </p>
+        </article>
+    {% endfor %}
+</article>
+{#    -------------------------------------------------------------#}
+
+
+
+    <article class="media content-section">
+            <a href="{% url 'sprint-create' %}">sprint-create</a>
+    </article>
+        <article class="media content-section">
+            <a href="{% url 'task-create' %}">task-create</a>
+    </article>
+        <article class="media content-section">
+            <a href="{% url 'comment-create' %}">comment-create</a>
+    </article>
+            <article class="media content-section">
+            <a href="{% url 'project-create' %}">project-create</a>
+    </article>
+
+{% endblock content %}
+
+
+{#    Descripion = models.CharField(max_length=300, null=False)#}
+{##}
+{#    projectnum = models.ForeignKey(project, on_delete=models.CASCADE)#}
+{#    cost = models.FloatField(null=False, default=0)#}

@@ -3,11 +3,19 @@
 
 
     <h2>{{ object.title }}</h2>
-<form action="{% url 'tasks_views' %}" method="POST">
+<form action="" method="POST">
     {% csrf_token %}
 
     <div class="fieldWrapper">
-        {{form}}
+        {% for field in form %}
+    <div class="fieldWrapper">
+        {{ field.errors }}
+        {{ field.label_tag }} {{ field }}
+        {% if field.help_text %}
+        <p class="help">{{ field.help_text|safe }}</p>
+        {% endif %}
+    </div>
+{% endfor %}
     </div>
     <input type="submit" name="Submit">
 </form>

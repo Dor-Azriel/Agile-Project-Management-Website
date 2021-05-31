@@ -18,14 +18,16 @@ from django.contrib import admin
 from django.urls import path,include
 from pages.views import task_views, task_sorted_by_date, home_view, task_sorted_by_done, task_detail, \
     dynamic_view, logd_view, DevlopHome_views, SubTasksPerTask_view, SubTaskComment_view, MessagePage_view, \
-    manager_views, ClientHome_views, work_done
+    manager_views, ClientHome_views, work_done, manager_views_projects, manager_views_sprints
 from django.contrib.auth.views import LoginView
-from work.views import add_comment, update_comment, update_task, add_task, add_sprint, update_sprint
-
+from work.views import add_comment, update_comment, update_task, add_task, add_sprint, update_sprint, add_project
+'manager_views_sprints'
 urlpatterns = [
     path('<int:id>', work_done,name='work_done'),
     path('', home_view,name='home_view'),
     path('manager/', manager_views, name='manager'),
+    path('manager/<int:project_id>', manager_views_projects, name='manager_views_projects'),
+    path('manager/sprint/<int:sprint_id>', manager_views_sprints, name='manager_views_sprints'),
     path('login/',LoginView.as_view(template_name='admin/login.html'),),
     path('tasks/', task_views,name='tasks_views'),
     path('admin/', admin.site.urls),
@@ -45,7 +47,7 @@ urlpatterns = [
     path('task/<int:pk>/update/', update_task.as_view(), name='task-update'),
     path('sprint/new/', add_sprint.as_view(), name='sprint-create'),
     path('sprint/<int:pk>/update/', update_sprint.as_view(), name='sprint-update'),
-    path('project/new/', add_sprint.as_view(), name='project-create'),
-    path('project/<int:pk>/update/', update_sprint.as_view(), name='project-update'),
+    path('project/new/', add_project.as_view(), name='project-create'),
+    path('project/<int:pk>/update/', add_project.as_view(), name='project-update'),
     path('Devlop/Messages/',MessagePage_view,name='MessagePage_view'),
 ]
