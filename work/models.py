@@ -63,9 +63,11 @@ class Task(models.Model):
         return reverse("add_comment", kwargs={"id": self.id})
         # return f"/tasks/{self.id}/"
 
+
 class Sprint_Project(models.Model):
     ProjectId = models.ForeignKey(project, on_delete=models.CASCADE)
     SprintId = models.ForeignKey(Sprint, on_delete=models.CASCADE)
+
 
 class Sprint_Task(models.Model):
     SpirntId = models.ForeignKey(Sprint, on_delete=models.CASCADE)
@@ -100,7 +102,8 @@ class Comment(models.Model):
     def __str__(self):
         return self.user
 
-
+    def get_absolute_url(self):
+        return reverse('SubTaskComment_view', kwargs={'id': self.Subtask.TaskID.id, 'my_id': self.Subtask.id})
 
 
 class review(models.Model):

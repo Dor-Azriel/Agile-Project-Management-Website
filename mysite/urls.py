@@ -20,8 +20,7 @@ from pages.views import task_views, add_comment, task_sorted_by_date, home_view,
     dynamic_view, logd_view, DevlopHome_views, SubTasksPerTask_view, SubTaskComment_view, MessagePage_view, \
     manager_views
 from django.contrib.auth.views import LoginView
-from work.views import add_comment, update_comment, update_task, add_task, add_sprint, update_sprint, update_project, \
-    add_project
+from work.views import add_comment, update_comment, update_task, add_task, add_sprint, update_sprint
 
 urlpatterns = [
     path('', home_view,name='home_view'),
@@ -45,8 +44,8 @@ urlpatterns = [
     path('task/<int:pk>/update/', update_task.as_view(), name='task-update'),
     path('sprint/new/', add_sprint.as_view(), name='sprint-create'),
     path('sprint/<int:pk>/update/', update_sprint.as_view(), name='sprint-update'),
-    path('project/new/', add_project.as_view(), name='project-create'),
-    path('sprint/<int:pk>/update/', update_project.as_view(), name='project-update'),
+    path('project/new/', add_sprint.as_view(), name='project-create'),
+    path('project/<int:pk>/update/', update_sprint.as_view(), name='project-update'),
     path('Devlop/Messages/',MessagePage_view,name='MessagePage_view'),
 
     # path('', home_view),
