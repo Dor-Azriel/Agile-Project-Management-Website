@@ -26,26 +26,8 @@ class Testskill(TestCase):
         tmp = skill.objects.create(level="JU", language="JA")
         self.assertEqual(tmp.__str__(),"JAJU")
 
-class TestTask(TestCase):
-    def test_init(self):
-        self.tmp=Task.objects.create(startTime=datetime(2020,4,4)
-                                     ,endTime=datetime(2020,4,5)
-                                     ,inCharge=User.objects.get(pk=1)
-                                     ,lastUpdate=datetime(2020,4,4)
-                                     ,cost=1000
-                                     , subTasks=SubTask.objects.get(pk=1),
-                                     TaskName="Test"
-                                     ,Description="testing")
-    def test_incharge(self):
-        tmp = Task.objects.create(startTime=datetime(2020, 4, 4)
-                                  , endTime=datetime(2020, 4, 5)
-                                  , inCharge=User.objects.get(pk=1)
-                                  , lastUpdate=datetime(2020, 4, 4)
-                                  , cost=1000
-                                  , subTasks=SubTask.objects.get(pk=1),
-                                  TaskName="Test"
-                                  , Description="testing")
-        self.assertEqual(User.objects.get(pk=1),tmp.inCharge)
+
+
 
 
 
