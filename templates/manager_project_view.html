@@ -30,6 +30,9 @@
               </div>
         </article>
     {% endfor %}
+    <article class="media content-section">
+            <a href="{% url 'sprint-create' %}">sprint-create</a>
+    </article>
     {#    -------------------------------------------------------------#}
 {#    -------------------------------------------------------------#}
 
@@ -65,9 +68,7 @@
 
 
 
-    <article class="media content-section">
-            <a href="{% url 'sprint-create' %}">sprint-create</a>
-    </article>
+
         <article class="media content-section">
             <a href="{% url 'task-create' %}">task-create</a>
     </article>

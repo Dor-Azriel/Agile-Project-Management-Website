@@ -34,15 +34,21 @@ urlpatterns = [
     path('sort_date/', task_sorted_by_date),
     path('sort_done/', task_sorted_by_done),
     path('tasks/<int:id>/', dynamic_view, name="task_detail"),
-    path('add-commento<int:id>', add_comment, name="add_comment"),
+
     path('accounts/profile/',logd_view),
     path('accounts/profile/client/',ClientHome_views,name="ClientHome_views"),
     path('accounts/profile/Messages/',MessagePage_view),
     path('Devlop/',DevlopHome_views,name='DevlopHome_views'),
     path('Devlop/<int:id>/',SubTasksPerTask_view,name='SubTasksPerTask_view'),
     path('Devlop/<int:id>/<int:my_id>/', SubTaskComment_view, name='SubTaskComment_view'),
-    path('comment/new/', add_comment.as_view() ,name='comment-create'),
+
+
+    path('comment/<int:pk>/new/', add_comment.as_view() ,name='comment-create'),
     path('comment/<int:pk>/update/', update_comment.as_view() ,name='comment-update'),
+
+
+
+
     path('task/new/', add_task.as_view(), name='task-create'),
     path('task/<int:pk>/update/', update_task.as_view(), name='task-update'),
     path('sprint/new/', add_sprint.as_view(), name='sprint-create'),

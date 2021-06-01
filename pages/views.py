@@ -12,7 +12,7 @@ from django.shortcuts import redirect
 from Message.models import Messages
 
 # Create your views here.
-from work.views import InputForm
+from work.views import InputForm, add_project
 
 
 def home_view(request, *args, **kwargs):
@@ -45,15 +45,12 @@ def manager_views_projects(request,project_id):
     tasks = Task.objects.all().filter(projectnum =project_id)
     sprints = Sprint.objects.all().filter(projectnum=project_id)
     p = get_object_or_404(project, id=project_id)
-    print(project_id)
-    print("size")
-    print(tasks[0])
     return render(request, "manager_project_view.html", {'tasks': tasks, 'sprints': sprints, 'p': p})
 
 def manager_views_sprints(request,sprint_id):
     tasks = Sprint_Task.objects.all().filter(SpirntId =sprint_id)
     sprint = get_object_or_404(Sprint, id=sprint_id)
-    return render(request, "manager_sprint_view.html", {'tasks': tasks, 'sprint': sprint})
+    return render(request, "manager_sprint_view.html", {'tasks': tasks, 'sprint': sprint, })
 
 
 
@@ -91,9 +88,10 @@ def SubTasksPerTask_view(request,id):
     return render(request, "SubTasksPerTask.html", {'tasks': obj,'t': obj2, })
 
 def SubTaskComment_view(request,id,my_id):
-    obj= SubTask.objects.filter(id=my_id)
-    obj2=Comment.objects.filter(Subtask=my_id)
-    return render(request, "SubTaskComment.html", {'tasks': obj,'t': obj2, })
+    obj = get_object_or_404(Task, id=id)
+    obj2 = Comment.objects.filter(Subtask=my_id)
+    print(obj.pk)
+    return render(request, "SubTaskComment.html", {'task': obj,'comments': obj2, })
 
 
 def task_views(request, *args, **kwargs):

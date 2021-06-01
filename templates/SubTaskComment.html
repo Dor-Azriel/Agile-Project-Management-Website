@@ -1,7 +1,7 @@
 {% extends "Base.html" %}
 {% block content %}
 
-    {% for task in tasks %}
+
         <article class="media content-section">
           <div class="media-body">
             <div class="article-metadata">
@@ -17,20 +17,20 @@
               </div>
               </div>
         </article>
-    {% endfor %}
 
-    {% for task in t %}
+
+    {% for comment in comments %}
         <article class="media content-section">
           <div class="media-body">
 
-            <h4><a class="article-title" href="#">{{ task.user }}</a></h4>
-              <p></p><small class="text-muted">Send : {{ task.created|date:"F d, Y" }}</small></p>
-            <p class="article-content">{{ task.body }}</p>
+            <h4><a class="article-title" href="#">{{ comment.user }}</a></h4>
+              <p></p><small class="text-muted">Send : {{ comment.created|date:"F d, Y" }}</small></p>
+            <p class="article-content">{{ comment.body }}</p>
 
               </div>
-             <a href="{% url 'comment-update' task.pk %}">Update Comment</a>
+             <a href="{% url 'comment-update' comment.pk %}">Update Comment</a>
         </article>
     {% endfor %}
-    <a href="{% url 'comment-create' %}">Leave Comment</a>
+    <a href="{% url 'comment-create' task.pk %}">Leave Comment</a>
 
 {% endblock content %}
