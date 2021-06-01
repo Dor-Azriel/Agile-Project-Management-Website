@@ -18,7 +18,8 @@ from django.contrib import admin
 from django.urls import path,include
 from pages.views import task_views, task_sorted_by_date, home_view, task_sorted_by_done, task_detail, \
     dynamic_view, logd_view, DevlopHome_views, SubTasksPerTask_view, SubTaskComment_view, MessagePage_view, \
-    manager_views, ClientHome_views, work_done, manager_views_projects, manager_views_sprints, manager_task_view
+    manager_views, ClientHome_views, work_done, manager_views_projects, manager_views_sprints, manager_task_view, \
+    manager_comment_view
 from django.contrib.auth.views import LoginView
 from work.views import add_comment, update_comment, update_task, add_task, add_sprint, update_sprint, add_project, \
     add_sprint_task, add_subtask, update_subtask, subtask_delete
@@ -31,6 +32,7 @@ urlpatterns = [
     path('manager/<int:project_id>', manager_views_projects, name='manager_views_projects'),
     path('manager/sprint/<int:sprint_id>', manager_views_sprints, name='manager_views_sprints'),
     path('manager/task/<int:task_id>', manager_task_view, name='manager_task_view'),
+    path('manager/sub_task/<int:sub_task_id>', manager_comment_view, name='manager_comment_view'),
 
     path('login/',LoginView.as_view(template_name='admin/login.html'),),
     path('tasks/', task_views,name='tasks_views'),

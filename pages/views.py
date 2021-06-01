@@ -54,12 +54,12 @@ def manager_views_projects(request, project_id):
 
 def manager_views_sprints(request, sprint_id):
     tasks = Sprint_Task.objects.all().filter(SpirntId=sprint_id)
-    print(tasks[0].TaskId)
     sprint = get_object_or_404(Sprint, id=sprint_id)
     p = sprint.projectnum
     print(p)
     return render(request, "manager_sprint_view.html",
                   {'tasks': tasks, 'sprint': sprint, 'p': p.pk})
+
 
 def manager_task_view(request, task_id):
     task = get_object_or_404(Task, id=task_id)
@@ -67,6 +67,11 @@ def manager_task_view(request, task_id):
     sub_tasks = SubTask.objects.filter(TaskID=task_id)
     return render(request, "manager_task_view.html", {'task': task, 'sub_tasks': sub_tasks})
 
+
+def manager_comment_view(request, sub_task_id):
+    sub_task = get_object_or_404(SubTask, id=sub_task_id)
+    comments = Comment.objects.filter(Subtask=sub_task_id)
+    return render(request, "manager_comment_view.html", {'sub_task': sub_task, 'comments': comments})
 
 
 def DevlopHome_views(request):
