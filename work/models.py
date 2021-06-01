@@ -97,6 +97,9 @@ class SubTask(models.Model):
     Description = models.CharField(max_length=500, null=True)
     TaskID = models.ForeignKey(Task, on_delete=models.CASCADE)
 
+    def get_absolute_url(self):
+        return reverse('manager_task_view', kwargs={'task_id': self.TaskID.id})
+
 
 class Comment(models.Model):
     Subtask = models.ForeignKey(SubTask, related_name='comments', on_delete=models.CASCADE)

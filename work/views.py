@@ -4,14 +4,61 @@ from django.forms import DateInput
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import SubTaskForm
 from django import forms
-from django.views.generic import CreateView, UpdateView
-from django.urls import reverse
+from django.views.generic import CreateView, UpdateView, DeleteView
+from django.urls import reverse, reverse_lazy
 
 from .models import Comment, Sprint, project, SubTask, Sprint_Task
 from .models import Task
 
 
 # startTime = forms.DateField(widget=forms.SelectDateWidget)
+
+class add_subtask(CreateView, LoginRequiredMixin, ):
+    model = SubTask
+    fields = '__all__'
+
+    def get_initial(self, *args, **kwargs):
+        initial = super(add_subtask, self).get_initial(**kwargs)
+        # print(self.kwargs['pk'])
+        task = get_object_or_404(Task, pk=self.kwargs['pk'])
+        initial['TaskName'] = task.TaskName
+        initial['TaskID'] = task.id
+        return initial
+
+    def form_valid(self, form):
+        t_n = form.cleaned_data['TaskName']
+        t_id = form.cleaned_data['TaskID']
+        task = get_object_or_404(Task, pk=self.kwargs['pk'])
+
+        if t_n != task.TaskName:
+            raise forms.ValidationError("You have to choose " + str(task.TaskName))
+        if t_id.id != task.id:
+            raise forms.ValidationError("You have to choose." + str(task.id))
+        return super().form_valid(form)
+
+
+class update_subtask(UpdateView, LoginRequiredMixin, ):
+    model = SubTask
+    fields = '__all__'
+
+    def form_valid(self, form):
+        t_n = form.cleaned_data['TaskName']
+        t_id = form.cleaned_data['TaskID']
+        task = get_object_or_404(Task, pk=self.kwargs['pk'])
+
+        if t_n != task.TaskName:
+            raise forms.ValidationError("You have to choose " + str(task.TaskName))
+        if t_id.id != task.id:
+            raise forms.ValidationError("You have to choose." + str(task.id))
+        return super().form_valid(form)
+
+
+class subtask_delete(DeleteView):
+    model = SubTask
+
+    def get_success_url(self):
+        return reverse_lazy('manager_task_view', kwargs={'task_id': self.kwargs['task_id']})
+
 
 class add_comment(CreateView, LoginRequiredMixin, ):
     model = Comment

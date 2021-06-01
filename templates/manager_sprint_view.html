@@ -24,7 +24,7 @@
                 <small class="text-muted"> - </small>
               <small class="text-muted">{{ task.TaskId.endTime|date:"F d, Y" }}</small>
             </div>
-            <h4><a class="article-title" href="/Devlop/{{ task.TaskId.id }}/">{{ task.TaskId.TaskName }}</a></h4>
+            <h4><a class="article-title" href="{% url 'manager_task_view' task.id %}">{{ task.TaskId.TaskName }}</a></h4>
               <p>
 {#                <form action="{% url 'work_done' task.TaskId.id %}" method="POST">#}
 {#                    {% csrf_token %}#}

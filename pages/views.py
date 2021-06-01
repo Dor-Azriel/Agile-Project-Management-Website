@@ -61,6 +61,13 @@ def manager_views_sprints(request, sprint_id):
     return render(request, "manager_sprint_view.html",
                   {'tasks': tasks, 'sprint': sprint, 'p': p.pk})
 
+def manager_task_view(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+    print(task)
+    sub_tasks = SubTask.objects.filter(TaskID=task_id)
+    return render(request, "manager_task_view.html", {'task': task, 'sub_tasks': sub_tasks})
+
+
 
 def DevlopHome_views(request):
     filt = request.user.id;

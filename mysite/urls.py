@@ -18,10 +18,10 @@ from django.contrib import admin
 from django.urls import path,include
 from pages.views import task_views, task_sorted_by_date, home_view, task_sorted_by_done, task_detail, \
     dynamic_view, logd_view, DevlopHome_views, SubTasksPerTask_view, SubTaskComment_view, MessagePage_view, \
-    manager_views, ClientHome_views, work_done, manager_views_projects, manager_views_sprints
+    manager_views, ClientHome_views, work_done, manager_views_projects, manager_views_sprints, manager_task_view
 from django.contrib.auth.views import LoginView
 from work.views import add_comment, update_comment, update_task, add_task, add_sprint, update_sprint, add_project, \
-    add_sprint_task
+    add_sprint_task, add_subtask, update_subtask, subtask_delete
 
 'manager_views_sprints'
 urlpatterns = [
@@ -30,6 +30,8 @@ urlpatterns = [
     path('manager/', manager_views, name='manager'),
     path('manager/<int:project_id>', manager_views_projects, name='manager_views_projects'),
     path('manager/sprint/<int:sprint_id>', manager_views_sprints, name='manager_views_sprints'),
+    path('manager/task/<int:task_id>', manager_task_view, name='manager_task_view'),
+
     path('login/',LoginView.as_view(template_name='admin/login.html'),),
     path('tasks/', task_views,name='tasks_views'),
     path('admin/', admin.site.urls),
@@ -48,7 +50,9 @@ urlpatterns = [
     path('comment/<int:pk>/new/', add_comment.as_view() ,name='comment-create'),
     path('comment/<int:pk>/update/', update_comment.as_view() ,name='comment-update'),
 
-
+    path('subtask/<int:pk>/new/', add_subtask.as_view(), name='subtask-create'),
+    path('subtask/<int:pk>/update/', update_subtask.as_view(), name='subtask-update'),
+    path('subtask/<int:task_id>/<int:pk>/delete/', subtask_delete.as_view(), name='subtask-delete'),
 
 
     path('task/<int:pk>/new/', add_task.as_view(), name='task-create'),
