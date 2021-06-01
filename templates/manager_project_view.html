@@ -19,7 +19,7 @@
 
         <article class="media content-section">
           <div class="media-body">
-            <h4><a class="article-title" href=" {% url 'manager_views_sprints' p.id %}">{{ sprint.SprintName }}</a></h4>
+            <h4><a class="article-title" href=" {% url 'manager_views_sprints' sprint.id %}">{{ sprint.SprintName }}</a></h4>
                <a class="text-muted">{{ sprint.StartTime|date:"F d, Y" }}</a>
                 <a class="text-muted"> - </a>
               <a class="text-muted">{{ sprint.endTime|date:"F d, Y" }}</a>
@@ -70,7 +70,7 @@
 
 
         <article class="media content-section">
-            <a href="{% url 'task-create' %}">task-create</a>
+            <a href="{% url 'task-create' p.pk %}">task create</a>
     </article>
 {% endblock content %}
 
