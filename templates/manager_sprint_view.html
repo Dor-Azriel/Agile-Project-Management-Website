@@ -1,7 +1,7 @@
 {% extends "Base.html" %}
 {% block content %}
 
-
+        <h4>{{ route }}</h4>
         <article class="media content-section">
           <div class="media-body">
             <h4>{{ sprint.SprintName }}</h4>
@@ -11,7 +11,12 @@
             <p class="article-content">{{ sprint.Description }}</p>
             <p><a class="mr-2" >Sprint Cost - {{ sprint.cost }} ₪ </a></p>
             <p><a class="mr-2" >Project Number  - {{ sprint.projectnum }} ₪ </a></p>
-              </div>
+              <div class="article-metadata">
+                <a href="{% url 'sprint-update' sprint.pk %}">sprint update</a>
+                    <small class="text-muted"> <p></p> </small>
+                <a href="{% url 'sprint-delete'  sprint.projectnum.id sprint.pk %}">sprint delete</a>
+            </div>
+          </div>
         </article>
 {#    -------------------------------------------------------------#}
 <h4>Tasks</h4>
@@ -24,7 +29,7 @@
                 <small class="text-muted"> - </small>
               <small class="text-muted">{{ task.TaskId.endTime|date:"F d, Y" }}</small>
             </div>
-            <h4><a class="article-title" href="{% url 'manager_task_view' task.id %}">{{ task.TaskId.TaskName }}</a></h4>
+            <h4><a class="article-title" href="{% url 'manager_task_view' task.TaskId.id %}">{{ task.TaskId.TaskName }}</a></h4>
               <p>
 {#                <form action="{% url 'work_done' task.TaskId.id %}" method="POST">#}
 {#                    {% csrf_token %}#}
@@ -44,19 +49,22 @@
 
 
 
-    <article class="media content-section">
-            <a href="{% url 'sprint-create' %}">sprint-create</a>
-    </article>
+{#    <article class="media content-section">#}
+{#            <a href="{% url 'sprint-create' %}">sprint-create</a>#}
+{#    </article>#}
 
     <article class="media content-section">
             <a href="{% url 'sprint_task-create' sprint.pk p %}">sprint task create</a>
     </article>
+{#    <article class="media content-section">#}
+{#            <a href="{% url 'task-create'  p route%}">task create</a>#}
+{#    </article>#}
 
 {#    <article class="media content-section">#}
 {#            <a href="{% url 'comment-create' %}">comment-create</a>#}
 {#    </article>#}
-            <article class="media content-section">
-            <a href="{% url 'project-create' %}">project-create</a>
-    </article>
+{#            <article class="media content-section">#}
+{#            <a href="{% url 'project-create' %}">project-create</a>#}
+{#    </article>#}
 
 {% endblock content %}

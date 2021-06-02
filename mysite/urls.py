@@ -19,20 +19,22 @@ from django.urls import path,include
 from pages.views import task_views, task_sorted_by_date, home_view, task_sorted_by_done, task_detail, \
     dynamic_view, logd_view, DevlopHome_views, SubTasksPerTask_view, SubTaskComment_view, MessagePage_view, \
     manager_views, ClientHome_views, work_done, manager_views_projects, manager_views_sprints, manager_task_view, \
-    manager_comment_view
+    manager_subtask_view
 from django.contrib.auth.views import LoginView
 from work.views import add_comment, update_comment, update_task, add_task, add_sprint, update_sprint, add_project, \
-    add_sprint_task, add_subtask, update_subtask, subtask_delete
+    add_sprint_task, add_subtask, update_subtask, subtask_delete, task_delete, delete_sprint
 
 'manager_views_sprints'
 urlpatterns = [
     path('<int:id>', work_done,name='work_done'),
     path('', home_view,name='home_view'),
+
+
     path('manager/', manager_views, name='manager'),
     path('manager/<int:project_id>', manager_views_projects, name='manager_views_projects'),
     path('manager/sprint/<int:sprint_id>', manager_views_sprints, name='manager_views_sprints'),
     path('manager/task/<int:task_id>', manager_task_view, name='manager_task_view'),
-    path('manager/sub_task/<int:sub_task_id>', manager_comment_view, name='manager_comment_view'),
+    path('manager/sub_task/<int:sub_task_id>', manager_subtask_view, name='manager_subtask_view'),
 
     path('login/',LoginView.as_view(template_name='admin/login.html'),),
     path('tasks/', task_views,name='tasks_views'),
@@ -48,7 +50,6 @@ urlpatterns = [
     path('Devlop/<int:id>/',SubTasksPerTask_view,name='SubTasksPerTask_view'),
     path('Devlop/<int:id>/<int:my_id>/', SubTaskComment_view, name='SubTaskComment_view'),
 
-
     path('comment/<int:pk>/new/', add_comment.as_view() ,name='comment-create'),
     path('comment/<int:pk>/update/', update_comment.as_view() ,name='comment-update'),
 
@@ -57,16 +58,18 @@ urlpatterns = [
     path('subtask/<int:task_id>/<int:pk>/delete/', subtask_delete.as_view(), name='subtask-delete'),
 
 
-    path('task/<int:pk>/new/', add_task.as_view(), name='task-create'),
+    path('task/<int:pk>/<str:route>/new/', add_task.as_view(), name='task-create'),
     path('task/<int:pk>/update/', update_task.as_view(), name='task-update'),
+    path('task/<str:route>/<int:r_id>/<int:pk>/delete/', task_delete.as_view(), name='task-delete'),
+
 
 
     path('sprint_task/<int:sprint>/<int:p>/new/', add_sprint_task.as_view(), name='sprint_task-create'),
 
 
-    path('sprint/new/', add_sprint.as_view(), name='sprint-create'),
+    path('sprint/<int:pk>/new/', add_sprint.as_view(), name='sprint-create'),
     path('sprint/<int:pk>/update/', update_sprint.as_view(), name='sprint-update'),
-
+    path('sprint/<int:project_id>/<int:pk>/delete/', delete_sprint.as_view(), name='sprint-delete'),
 
     path('project/new/', add_project.as_view(), name='project-create'),
     path('project/<int:pk>/update/', add_project.as_view(), name='project-update'),

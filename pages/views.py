@@ -46,32 +46,47 @@ def manager_views(request):
 
 
 def manager_views_projects(request, project_id):
-    tasks = Task.objects.all().filter(projectnum=project_id)
+    tasks = Task.objects.all().filter(projectnum=project_id, inSprint=False)
     sprints = Sprint.objects.all().filter(projectnum=project_id)
     p = get_object_or_404(project, id=project_id)
-    return render(request, "manager_project_view.html", {'tasks': tasks, 'sprints': sprints, 'p': p})
+    route = 'project'
+    return render(request, "manager_project_view.html", {'tasks': tasks, 'sprints': sprints, 'p': p, 'route': route})
 
 
 def manager_views_sprints(request, sprint_id):
     tasks = Sprint_Task.objects.all().filter(SpirntId=sprint_id)
     sprint = get_object_or_404(Sprint, id=sprint_id)
     p = sprint.projectnum
-    print(p)
+    route = 'sprint'
+    print(route)
     return render(request, "manager_sprint_view.html",
-                  {'tasks': tasks, 'sprint': sprint, 'p': p.pk})
+                  {'tasks': tasks, 'sprint': sprint, 'p': p.pk, 'route': route})
 
 
 def manager_task_view(request, task_id):
     task = get_object_or_404(Task, id=task_id)
+    print('maegiaa?')
+    if task.inSprint:
+        print('inside sprint')
+        route = 'sprint'
+        t = get_object_or_404(Sprint_Task, TaskId=task)
+        r_id = t.SpirntId.id
+    else:
+        route = 'project'
+        r_id = task.projectnum.id
+    sub_tasks = SubTask.objects.filter(TaskID=task)
     print(task)
-    sub_tasks = SubTask.objects.filter(TaskID=task_id)
-    return render(request, "manager_task_view.html", {'task': task, 'sub_tasks': sub_tasks})
+
+    return render(request, "manager_task_view.html",
+                  {'task': task, 'sub_tasks': sub_tasks, 'r_id': r_id, 'route': route} )
 
 
-def manager_comment_view(request, sub_task_id):
+def manager_subtask_view(request, sub_task_id):
     sub_task = get_object_or_404(SubTask, id=sub_task_id)
+    task = sub_task.TaskID
     comments = Comment.objects.filter(Subtask=sub_task_id)
-    return render(request, "manager_comment_view.html", {'sub_task': sub_task, 'comments': comments})
+    print(comments)
+    return render(request, "manager_subtask_view.html", {'sub_task': sub_task, 'comments': comments, 'task': task})
 
 
 def DevlopHome_views(request):

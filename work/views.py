@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.forms import DateInput
 from django.shortcuts import render, redirect, get_object_or_404
@@ -108,7 +109,8 @@ class update_comment(UpdateView, LoginRequiredMixin):
 
 class add_task(CreateView, ):
     model = Task
-    fields = '__all__'
+    fields = ['startTime', 'endTime', 'inCharge', 'workDone', 'lastUpdate', 'cost', 'TaskName', 'Description',
+              'projectnum', ]
 
     def form_valid(self, form):
         p = form.cleaned_data['projectnum']
@@ -124,6 +126,9 @@ class add_task(CreateView, ):
         initial['projectnum'] = p
         return initial
 
+    # def get_success_url(self):
+    #     return reverse_lazy('manager_views_projects', kwargs={'task_id': self.kwargs['task_id']})
+
 
 class update_task(UpdateView, LoginRequiredMixin):
     model = Task
@@ -137,14 +142,55 @@ class update_task(UpdateView, LoginRequiredMixin):
         return super().form_valid(form)
 
 
+class task_delete(DeleteView):
+    model = Task
+
+    def get_success_url(self):
+
+        print(self.kwargs['route'])
+        if self.kwargs['route'] == 'sprint':
+            print('delete check')
+            return reverse_lazy('manager_views_sprints', kwargs={'sprint_id': self.kwargs['r_id']})
+        else:
+            return reverse_lazy('manager_views_projects', kwargs={'project_id': self.kwargs['r_id']})
+
+
 class add_sprint(CreateView, LoginRequiredMixin):
     model = Sprint
     fields = '__all__'
+
+    def form_valid(self, form):
+        p = form.cleaned_data['projectnum']
+        proj = get_object_or_404(project, pk=self.kwargs['pk'])
+        if p != proj:
+            raise forms.ValidationError("You have to choose." + proj.__str__())
+        return super().form_valid(form)
+
+    def get_initial(self, *args, **kwargs):
+        initial = super(add_sprint, self).get_initial(**kwargs)
+        p = get_object_or_404(project, pk=self.kwargs['pk'])
+        initial['projectnum'] = p
+        return initial
 
 
 class update_sprint(UpdateView, LoginRequiredMixin):
     model = Sprint
     fields = '__all__'
+
+    def form_valid(self, form):
+        p = form.cleaned_data['projectnum']
+        proj = get_object_or_404(project, pk=self.kwargs['pk'])
+        if p != proj:
+            raise forms.ValidationError("You have to choose." + proj.__str__())
+        return super().form_valid(form)
+
+
+class delete_sprint(DeleteView):
+    model = Sprint
+
+    def get_success_url(self):
+        return reverse_lazy('manager_views_projects', kwargs={'project_id': self.kwargs['project_id']})
+
 
 
 class add_project(CreateView, LoginRequiredMixin):
@@ -152,8 +198,20 @@ class add_project(CreateView, LoginRequiredMixin):
     fields = '__all__'
 
     def form_valid(self, form):
-        print(form.cleaned_data)
+        u = str(form.cleaned_data['manager'])
+        user = str(self.request.user)
+        if u != user:
+            raise forms.ValidationError("You have to use your name.")
         return super().form_valid(form)
+
+    def get_initial(self, *args, **kwargs):
+        initial = super(add_project, self).get_initial(**kwargs)
+        initial['manager'] = self.request.user
+        return initial
+    # def __init__(self, *args, **kwargs):
+    #     super(add_project, self).__init__(*args, **kwargs)
+    #     self.fields['client'] = User.objects.filter(groups__name__in='client')
+    # -------------------    letapel becclinet
 
 
 class update_project(UpdateView, LoginRequiredMixin):
@@ -180,7 +238,9 @@ class add_sprint_task(CreateView, ):
         if s != sprint:
             raise forms.ValidationError("You have to choose." + sprint.__str__())
         if t not in tasks and s == sprint:
-            t.inserted_to_sprint
+            print('inser to sprint')
+            t.inserted_to_sprint()
+            print(t.inSprint)
         return super().form_valid(form)
 
     def get_initial(self, *args, **kwargs):

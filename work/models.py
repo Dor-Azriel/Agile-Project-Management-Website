@@ -64,6 +64,7 @@ class Task(models.Model):
     projectnum = models.ForeignKey(project, on_delete=models.CASCADE)
     inSprint = models.BooleanField(default=False)
 
+
     def get_absolute_url(self):
         return reverse('manager_views_projects', kwargs={'project_id': self.projectnum.id})
 
@@ -176,21 +177,21 @@ def SubTask_Update(sender, instance, update_fields, **kwargs):
 pre_save.connect(SubTask_Update, sender=SubTask)
 
 
-def Task_Update(sender, instance, **kwargs):
-    if Task.objects.filter(id=instance.id):
-        if Sprint_Task.objects.filter(TaskId=instance.id):
-            tmp = Sprint.objects.filter(id=Sprint_Task.objects.filter(TaskId=instance.id)[0].id)[0].cost
-            tmpsub = Task.objects.filter(id=instance.id)[0].cost
-            if tmpsub != instance.cost:
-                dic = Sprint.objects.filter(id=Sprint_Task.objects.filter(TaskId=instance.id)[0].id)[0]
-                dic.cost = tmp + instance.cost - tmpsub
-                pre_save.send(sender=Sprint, instance=dic)
-                Sprint.objects.filter(id=Sprint_Task.objects.filter(TaskId=instance.id)[0].id).update(
-                    cost=tmp + instance.cost - tmpsub)
-            # if instance.workDone==100:
+# def Task_Update(sender, instance, **kwargs):
+#     if Task.objects.filter(id=instance.id):
+#         if Sprint_Task.objects.filter(TaskId=instance.id):
+#             tmp = Sprint.objects.filter(id=Sprint_Task.objects.filter(TaskId=instance.id)[0].id)[0].cost
+#             tmpsub = Task.objects.filter(id=instance.id)[0].cost
+#             if tmpsub != instance.cost:
+#                 dic = Sprint.objects.filter(id=Sprint_Task.objects.filter(TaskId=instance.id)[0].id)[0]
+#                 dic.cost = tmp + instance.cost - tmpsub
+#                 pre_save.send(sender=Sprint, instance=dic)
+#                 Sprint.objects.filter(id=Sprint_Task.objects.filter(TaskId=instance.id)[0].id).update(
+#                     cost=tmp + instance.cost - tmpsub)
+#             # if instance.workDone==100:
 
 
-pre_save.connect(Task_Update, sender=Task)
+# pre_save.connect(Task_Update, sender=Task)
 
 
 # def Sprint_Update(sender, instance, **kwargs):
