@@ -1,7 +1,7 @@
 from django.core.mail.backends import console
 from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from work.forms import CommentForm
 from work.models import Task, project, Sprint, SubTask, Comment, Sprint_Project, Sprint_Task
 from django.shortcuts import HttpResponse
@@ -18,6 +18,11 @@ from work.views import InputForm, add_project
 def home_view(request, *args, **kwargs):
     obj = Task.objects.order_by()
     return render(request, "base.html", {'tasks': obj, });
+
+
+def logout_view(request):
+    logout(request)
+    return render(request, "base.html",)
 
 
 def logd_view(request):
@@ -78,7 +83,7 @@ def manager_task_view(request, task_id):
     print(task)
 
     return render(request, "manager_task_view.html",
-                  {'task': task, 'sub_tasks': sub_tasks, 'r_id': r_id, 'route': route} )
+                  {'task': task, 'sub_tasks': sub_tasks, 'r_id': r_id, 'route': route})
 
 
 def manager_subtask_view(request, sub_task_id):

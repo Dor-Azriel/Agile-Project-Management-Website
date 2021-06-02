@@ -19,8 +19,8 @@ from django.urls import path,include
 from pages.views import task_views, task_sorted_by_date, home_view, task_sorted_by_done, task_detail, \
     dynamic_view, logd_view, DevlopHome_views, SubTasksPerTask_view, SubTaskComment_view, MessagePage_view, \
     manager_views, ClientHome_views, work_done, manager_views_projects, manager_views_sprints, manager_task_view, \
-    manager_subtask_view
-from django.contrib.auth.views import LoginView
+    manager_subtask_view, logout_view
+from django.contrib.auth.views import LoginView, LogoutView
 from work.views import add_comment, update_comment, update_task, add_task, add_sprint, update_sprint, add_project, \
     add_sprint_task, add_subtask, update_subtask, subtask_delete, task_delete, delete_sprint
 
@@ -36,14 +36,24 @@ urlpatterns = [
     path('manager/task/<int:task_id>', manager_task_view, name='manager_task_view'),
     path('manager/sub_task/<int:sub_task_id>', manager_subtask_view, name='manager_subtask_view'),
 
-    path('login/',LoginView.as_view(template_name='admin/login.html'),),
+    # ------------------------------------------------------
+    # path('login/',LoginView.as_view(template_name='admin/login.html'),),
+    #
+    path('login/', LoginView.as_view(template_name='admin/login.html'), name='login'),
+    path('logout/', logout_view, name='logout'),
+
+    # ------------------------------------------------------
+
+
+
+
     path('tasks/', task_views,name='tasks_views'),
     path('admin/', admin.site.urls),
     path('sort_date/', task_sorted_by_date),
     path('sort_done/', task_sorted_by_done),
     path('tasks/<int:id>/', dynamic_view, name="task_detail"),
 
-    path('accounts/profile/',logd_view),
+    path('accounts/profile/',logd_view, name='logd_view'),
     path('accounts/profile/client/',ClientHome_views,name="ClientHome_views"),
     path('accounts/profile/Messages/',MessagePage_view),
     path('Devlop/',DevlopHome_views,name='DevlopHome_views'),

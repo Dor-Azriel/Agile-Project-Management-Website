@@ -11,7 +11,7 @@
                <p></p><small class="text-muted">cost : {{ task.cost}}</small></p>
             <p class="article-content">{{ task.Description }}</p>
             <div class="article-metadata">
-              <a href="{% url 'task-update' task.pk %}">sub task update</a>
+              <a href="{% url 'task-update' task.pk %}">task update</a>
                     <small class="text-muted"> <p></p> </small>
               <a href="{% url 'task-delete' route r_id task.pk   %}">task delete</a>
             </div>
