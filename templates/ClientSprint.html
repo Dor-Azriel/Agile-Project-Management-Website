@@ -3,11 +3,40 @@
     <article class="media content-section">
           <div class="media-body">
 
-            <h4><a class="article-title" >Sprints:</a></h4>
+            <h4><a class="article-title" ><center>Sprints</center></a></h4>
 
               </div>
         </article>
-    {% for task in tasks %}
+{% for sprint in sprints %}
+        <article class="media content-section">
+          <div class="media-body">
+            <div class="article-metadata">
+              <small class="text-muted">{{ sprint.StartTime|date:"F d, Y" }}</small>
+                <small class="text-muted"> - </small>
+              <small class="text-muted">{{ sprint.endTime|date:"F d, Y" }}</small>
+            </div>
+            <h4><a class="article-title" href="#">{{ sprint.SprintName }}</a></h4>
+            <p class="article-content">{{ sprint.Descripion }}</p>
+              <p></p>
+              <a class="mr-2" >Tasks Done : {{ pro.totalTask }}  </a>
+
+                <p></p>
+                  <div class="progress">
+      <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated " role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: {{sprint.taskDone}}%"></div>
+            </div>
+              </div>
+        </article>
+
+    {% endfor %}
+        <article class="media content-section">
+          <div class="media-body">
+
+            <h4><a class="article-title"  ><center>Tasks</center> </a></h4>
+
+              </div>
+        </article>
+
+        {% for task in tasks %}
         <article class="media content-section">
           <div class="media-body">
             <div class="article-metadata">
@@ -16,12 +45,19 @@
                 <small class="text-muted"> - </small>
               <small class="text-muted">{{ task.endTime|date:"F d, Y" }}</small>
             </div>
+{#             <script>#}
+{#                 if(task.workDone==100){#}
+{#                   <h4><a class="article-title" href="/Devlop/{{ task.id }}/">{{ task.TaskName }}</a></h4>#}
+{#                 }#}
+{#             </script>#}
             <h4><a class="article-title" href="/Devlop/{{ task.id }}/">{{ task.TaskName }}</a></h4>
             <p class="article-content">{{ task.Description }}</p>
               <div class="progress">
-            <div class="progress-bar" role="progressbar"  aria-valuemin="1" aria-valuemax="100" aria-valuenow={{task.workDone}}>{{task.workDone}}%</div>
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"  aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width: {{task.workDone}}%">{{task.workDone}}%</div>
               </div>
-              </div>
+
+                </div>
+
         </article>
     {% endfor %}
 {% endblock content %}
