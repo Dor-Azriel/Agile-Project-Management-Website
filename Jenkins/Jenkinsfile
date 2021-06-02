@@ -22,7 +22,7 @@ pipeline {
          stage('Run Unit Tests') {
                 steps {
               withEnv(["HOME=${env.WORKSPACE}"]) {
-                sh 'python -m run manage.py test'
+                sh 'python -m work manage.py test'
             }
             //step( currentBuild.result = 'SUCCESS')
           }
