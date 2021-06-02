@@ -10,10 +10,15 @@
             <p><a class="mr-2" >Project Budget - {{ p.Budget }} ₪ </a></p>
             <p><a class="mr-2" >Project Current Budget Schedule - {{ p.currentBudgeSchedule }} ₪ </a></p>
             <p><a class="mr-2" >Project Money Spends  - {{ p.MoneySpends }} ₪ </a></p>
+            <p><a class="mr-2" >Tasks Done :</a></p>
+               <p>  <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" style="width:{{p.count}}%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+             </div></p>
+
               </div>
         </article>
 {#    -------------------------------------------------------------#}
-          <h4>Sprints</h4>
+          <h4><center>Sprints</center></h4>
 
         {% for sprint in sprints %}
 
@@ -36,7 +41,7 @@
     {#    -------------------------------------------------------------#}
 {#    -------------------------------------------------------------#}
 
-          <h4>Tasks</h4>
+          <h4><center>Tasks</center></h4>
         {% for task in tasks %}
         <article class="media content-section">
           <div class="media-body">
@@ -47,6 +52,10 @@
               <small class="text-muted">{{ task.endTime|date:"F d, Y" }}</small>
             </div>
             <h4><a class="article-title" href="{% url 'manager_task_view' task.id %}">{{ task.TaskName }}</a></h4>
+              <p class="article-content">{{ task.Description }}</p>
+              <p><div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated " role="progressbar" style="width: {{task.workDone}}%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+              </div></p>
               <p>
             </div>
           </p>
