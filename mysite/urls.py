@@ -22,7 +22,7 @@ from pages.views import task_views, task_sorted_by_date, home_view, task_sorted_
     manager_subtask_view, logout_view,ClientSprint_view
 from django.contrib.auth.views import LoginView, LogoutView
 from work.views import add_comment, update_comment, update_task, add_task, add_sprint, update_sprint, add_project, \
-    add_sprint_task, add_subtask, update_subtask, subtask_delete, task_delete, delete_sprint
+    add_sprint_task, add_subtask, update_subtask, subtask_delete, task_delete, delete_sprint, send_message
 
 'manager_views_sprints'
 urlpatterns = [
@@ -87,4 +87,6 @@ urlpatterns = [
 
 
     path('Devlop/Messages/', MessagePage_view, name='MessagePage_view'),
+    path('send_message/<int:project_id>', send_message, name='send-message'),
+
 ]

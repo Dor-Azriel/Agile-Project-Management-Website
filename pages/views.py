@@ -2,11 +2,10 @@ from django.core.mail.backends import console
 from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext
 from django.contrib.auth import authenticate, login, logout
-from work.forms import CommentForm
 from work.models import Task, project, Sprint, SubTask, Comment, Sprint_Project, Sprint_Task
 from django.shortcuts import HttpResponse
 from django.contrib import admin
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from Message.models import Messages
@@ -52,7 +51,7 @@ def ClientSprint_view(request, id):
     return render(request, "ClientSprint.html", {'sprints': spri,'tasks': tasks })
 
 def MessagePage_view(request):
-    list = Messages.objects.all().filter(reciver=request.user.id, readConf=False)
+    list = Messages.objects.all().filter(reciver=request.user.id, readConf=False).order_by("date")
     return render(request, "MessagesPage.html", {'tasks': list})
 
 
@@ -90,7 +89,7 @@ def manager_views_sprints(request, sprint_id):
 
 def manager_task_view(request, task_id):
     task = get_object_or_404(Task, id=task_id)
-    print('maegiaa?')
+    # print('maegiaa?')
     if task.inSprint:
         print('inside sprint')
         route = 'sprint'
@@ -107,15 +106,24 @@ def manager_task_view(request, task_id):
 
 
 def manager_subtask_view(request, sub_task_id):
+
     sub_task = get_object_or_404(SubTask, id=sub_task_id)
     task = sub_task.TaskID
     comments = Comment.objects.filter(Subtask=sub_task_id)
     print(comments)
     return render(request, "manager_subtask_view.html", {'sub_task': sub_task, 'comments': comments, 'task': task})
 
+def SubTaskComment_view(request, id, my_id):
+    obj = get_object_or_404(SubTask, id=my_id)
+    obj2 = Comment.objects.filter(Subtask=my_id)
+    print(obj.pk)
+    if request.user.groups.all()[0].name == "Developer":
+        return render(request, "SubTaskComment.html", {'task': obj, 'comments': obj2, })
+    return redirect('manager_subtask_view', my_id)
+
 
 def DevlopHome_views(request):
-    filt = request.user.id;
+    filt = request.user.id
     obj = Task.objects.all().filter(inCharge=filt);
     obj2 = {'name': request.user.username}
     return render(request, "DevlopHome.html", {'tasks': obj, 'name': obj2})
@@ -144,13 +152,6 @@ def SubTasksPerTask_view(request, id):
     obj = SubTask.objects.filter(TaskID=id)
     obj2 = Task.objects.filter(id=id)
     return render(request, "SubTasksPerTask.html", {'tasks': obj, 't': obj2, })
-
-
-def SubTaskComment_view(request, id, my_id):
-    obj = get_object_or_404(Task, id=id)
-    obj2 = Comment.objects.filter(Subtask=my_id)
-    print(obj.pk)
-    return render(request, "SubTaskComment.html", {'task': obj, 'comments': obj2, })
 
 
 def task_views(request, *args, **kwargs):

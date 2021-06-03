@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.forms import DateInput
 from django.shortcuts import render, redirect, get_object_or_404
+
+from Message.models import Messages
 from .forms import SubTaskForm
 from django import forms
 from django.views.generic import CreateView, UpdateView, DeleteView
@@ -16,42 +18,22 @@ from .models import Task
 
 class add_subtask(CreateView, LoginRequiredMixin, ):
     model = SubTask
-    fields = '__all__'
+    fields = ['startTime', 'endTime', 'encharge', 'lastUpdate', 'cost', 'workDone', 'skillNeed', 'Description']
 
-    def get_initial(self, *args, **kwargs):
-        initial = super(add_subtask, self).get_initial(**kwargs)
-        # print(self.kwargs['pk'])
+    def get_form_kwargs(self):
+        kwargs = super(add_subtask, self).get_form_kwargs()
         task = get_object_or_404(Task, pk=self.kwargs['pk'])
-        initial['TaskName'] = task.TaskName
-        initial['TaskID'] = task.id
-        return initial
-
-    def form_valid(self, form):
-        t_n = form.cleaned_data['TaskName']
-        t_id = form.cleaned_data['TaskID']
-        task = get_object_or_404(Task, pk=self.kwargs['pk'])
-
-        if t_n != task.TaskName:
-            raise forms.ValidationError("You have to choose " + str(task.TaskName))
-        if t_id.id != task.id:
-            raise forms.ValidationError("You have to choose." + str(task.id))
-        return super().form_valid(form)
+        if kwargs['instance'] is None:
+            kwargs['instance'] = SubTask()
+        kwargs['instance'].TaskName = task.TaskName
+        kwargs['instance'].TaskID = task
+        print(kwargs)
+        return kwargs
 
 
 class update_subtask(UpdateView, LoginRequiredMixin, ):
     model = SubTask
-    fields = '__all__'
-
-    def form_valid(self, form):
-        t_n = form.cleaned_data['TaskName']
-        t_id = form.cleaned_data['TaskID']
-        task = get_object_or_404(Task, pk=self.kwargs['pk'])
-
-        if t_n != task.TaskName:
-            raise forms.ValidationError("You have to choose " + str(task.TaskName))
-        if t_id.id != task.id:
-            raise forms.ValidationError("You have to choose." + str(task.id))
-        return super().form_valid(form)
+    fields = ['startTime', 'endTime', 'encharge', 'lastUpdate', 'cost', 'workDone', 'skillNeed', 'Description']
 
 
 class subtask_delete(DeleteView):
@@ -63,83 +45,45 @@ class subtask_delete(DeleteView):
 
 class add_comment(CreateView, LoginRequiredMixin, ):
     model = Comment
-    fields = '__all__'
+    fields = ['body']
 
-    def get_initial(self, *args, **kwargs):
-        initial = super(add_comment, self).get_initial(**kwargs)
-        initial['user'] = self.request.user
-        print(self.kwargs['pk'])
+    def get_form_kwargs(self):
+        kwargs = super(add_comment, self).get_form_kwargs()
         sub_task = get_object_or_404(SubTask, pk=self.kwargs['pk'])
-        initial['Subtask'] = sub_task
-        return initial
-
-    def form_valid(self, form):
-        u = str(form.cleaned_data['user'])
-        user = str(self.request.user)
-        print(user)
-        s_t = form.cleaned_data['Subtask']
-        sub_task = get_object_or_404(SubTask, pk=self.kwargs['pk'])
-        uu = str(user)
-        print(uu)
-        if u != user:
-            raise forms.ValidationError("You have to use your name.")
-        if s_t != sub_task:
-            raise forms.ValidationError("You have to choose." + sub_task.__str__())
-        return super().form_valid(form)
+        if kwargs['instance'] is None:
+            kwargs['instance'] = Comment()
+        kwargs['instance'].user = self.request.user
+        kwargs['instance'].Subtask = sub_task
+        # print(kwargs)
+        print('sdfsdfsdff')
+        return kwargs
 
 
 class update_comment(UpdateView, LoginRequiredMixin):
     model = Comment
-    fields = '__all__'
+    fields = ['body']
 
-    def form_valid(self, form):
-        u = str(form.cleaned_data['user'])
-        user = str(self.request.user)
-        print(user)
-        s_t = form.cleaned_data['Subtask']
-        sub_task = get_object_or_404(SubTask, pk=self.kwargs['pk'])
-        uu = str(user)
-        print(uu)
-        if u != user:
-            raise forms.ValidationError("You have to use your name.")
-        if s_t != sub_task:
-            raise forms.ValidationError("You have to choose." + sub_task.__str__())
-        return super().form_valid(form)
+
 
 
 class add_task(CreateView, ):
     model = Task
     fields = ['startTime', 'endTime', 'inCharge', 'workDone', 'lastUpdate', 'cost', 'TaskName', 'Description',
-              'projectnum', ]
+              ]
 
-    def form_valid(self, form):
-        p = form.cleaned_data['projectnum']
-        proj = get_object_or_404(project, pk=self.kwargs['pk'])
-        if p != proj:
-            raise forms.ValidationError("You have to choose." + proj.__str__())
-        return super().form_valid(form)
-
-    def get_initial(self, *args, **kwargs):
-        initial = super(add_task, self).get_initial(**kwargs)
-        print('gvfff')
-        p = get_object_or_404(project, pk=self.kwargs['pk'])
-        initial['projectnum'] = p
-        return initial
-
-    # def get_success_url(self):
-    #     return reverse_lazy('manager_views_projects', kwargs={'task_id': self.kwargs['task_id']})
+    def get_form_kwargs(self):
+        kwargs = super(add_task, self).get_form_kwargs()
+        if kwargs['instance'] is None:
+            kwargs['instance'] = Task()
+        kwargs['instance'].projectnum = get_object_or_404(project, pk=self.kwargs['pk'])
+        print(kwargs)
+        return kwargs
 
 
 class update_task(UpdateView, LoginRequiredMixin):
     model = Task
-    fields = '__all__'
-
-    def form_valid(self, form):
-        p = form.cleaned_data['projectnum']
-        proj = get_object_or_404(project, pk=self.kwargs['pk'])
-        if p != proj:
-            raise forms.ValidationError("You have to choose." + proj.__str__())
-        return super().form_valid(form)
+    fields = ['startTime', 'endTime', 'inCharge', 'workDone', 'lastUpdate', 'cost', 'TaskName', 'Description',
+              ]
 
 
 class task_delete(DeleteView):
@@ -191,6 +135,14 @@ class delete_sprint(DeleteView):
     def get_success_url(self):
         return reverse_lazy('manager_views_projects', kwargs={'project_id': self.kwargs['project_id']})
 
+
+def send_message(request, project_id):
+    print(project_id)
+    p = get_object_or_404(project, id=project_id)
+    m = Messages(sender=str(request.user.username), reciver=p.manager,
+                 message="Contact  " + request.user.username.__str__() + ' about ' + p.__str__(), Subject='Alert')
+    m.save()
+    return redirect('ClientHome_views')
 
 
 class add_project(CreateView, LoginRequiredMixin):

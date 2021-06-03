@@ -114,10 +114,8 @@ class SubTask(models.Model):
 class Comment(models.Model):
     Subtask = models.ForeignKey(SubTask, related_name='comments', on_delete=models.CASCADE)
     user = models.CharField(max_length=250)
-    email = models.EmailField()
     body = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
-    approved = models.BooleanField(default=False)
 
     def approved(self):
         self.approved = True

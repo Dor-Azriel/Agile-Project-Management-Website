@@ -6,10 +6,7 @@ from .models import SubTask
 from .models import Task
 
 
-class CommentForm(forms.ModelForm):
-    class Meta:
-        model = Comment
-        fields = ('user', 'email', 'body')
+
 
 
 class SubTaskForm(forms.ModelForm):
