@@ -16,10 +16,15 @@
                <a class="text-muted">{{ p.startTime|date:"F d, Y" }}</a>
                 <a class="text-muted"> - </a>
               <a class="text-muted">{{ p.endTime|date:"F d, Y" }}</a>
-{#            <p class="article-content">{{ p.Description }}</p>#}
-{#            <p><a class="mr-2" >Project Budget - {{ p.Budget }} ₪ </a></p>#}
-{#            <p><a class="mr-2" >Project Current Budget Schedule - {{ p.currentBudgeSchedule }} ₪ </a></p>#}
-{#            <p><a class="mr-2" >Project Money Spends  - {{ p.MoneySpends }} ₪ </a></p>#}
+              <p class="article-content">{{ p.Description }}</p>
+            <p><a class="mr-2" >Project Budget - {{ p.Budget }} ₪ </a></p>
+            <p><a class="mr-2" >Project Current Budget Schedule - {{ p.currentBudgeSchedule }} ₪ </a></p>
+            <p><a class="mr-2" >Project Money Spends  - {{ p.MoneySpends }} ₪ </a></p>
+               <p><a class="mr-2" >Budget current schedule :  </a></p>
+              <p>  <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width:{{p.stat}}%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+             </div></p>
+
               </div>
         </article>
     {% endfor %}

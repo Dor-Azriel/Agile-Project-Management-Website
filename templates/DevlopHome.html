@@ -3,7 +3,7 @@
     <article class="media content-section">
           <div class="media-body">
             {% for a in name %}
-            <h4><a class="article-title" > Hi {{ name.name }}, here is your to-do list :</a></h4>
+            <h4><a class="article-title" > <center>Hi {{ name.name }}, here is your to-do list :</center></a></h4>
 
               </div>
         </article>
@@ -17,10 +17,15 @@
                 <small class="text-muted"> - </small>
               <small class="text-muted">{{ task.endTime|date:"F d, Y" }}</small>
             </div>
+{#             <script>#}
+{#                 if(task.workDone==100){#}
+{#                   <h4><a class="article-title" href="/Devlop/{{ task.id }}/">{{ task.TaskName }}</a></h4>#}
+{#                 }#}
+{#             </script>#}
             <h4><a class="article-title" href="/Devlop/{{ task.id }}/">{{ task.TaskName }}</a></h4>
             <p class="article-content">{{ task.Description }}</p>
               <div class="progress">
-            <div class="progress-bar" role="progressbar"  aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width: {{task.workDone}}%">{{task.workDone}}%</div>
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"  aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width: {{task.workDone}}%">{{task.workDone}}%</div>
               </div>
               <p>
                 <form action="{% url 'work_done' task.id %}" method="POST">

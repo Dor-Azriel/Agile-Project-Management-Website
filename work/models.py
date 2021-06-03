@@ -36,6 +36,9 @@ class project(models.Model):
     currentBudgeSchedule = models.FloatField(null=False, default=0)
     MoneySpends = models.FloatField(null=False, default=0)
 
+    def __str__(self):
+        return  self.id.__str__()+" " +self.ProjectName
+
     def get_absolute_url(self):
         return reverse('manager', kwargs={})
 
@@ -47,6 +50,9 @@ class Sprint(models.Model):
     endTime = models.DateTimeField(null=False)
     projectnum = models.ForeignKey(project, on_delete=models.CASCADE)
     cost = models.FloatField(null=False, default=0)
+
+    def __str__(self):
+        return self.projectnum.id.__str__() +"-"+ self.id.__str__()+" " +self.SprintName
 
     def get_absolute_url(self):
         return reverse('manager_views_projects', kwargs={'project_id': self.projectnum.id})
@@ -64,7 +70,8 @@ class Task(models.Model):
     projectnum = models.ForeignKey(project, on_delete=models.CASCADE)
     inSprint = models.BooleanField(default=False)
 
-
+    def __str__(self):
+        return self.projectnum.id.__str__() +"-"+ self.id.__str__()+" " +self.TaskName
     def get_absolute_url(self):
         return reverse('manager_views_projects', kwargs={'project_id': self.projectnum.id})
 
@@ -98,6 +105,8 @@ class SubTask(models.Model):
     Description = models.CharField(max_length=500, null=True)
     TaskID = models.ForeignKey(Task, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.TaskID.id.__str__() +"-"+ self.id.__str__()+" " +self.TaskName
     def get_absolute_url(self):
         return reverse('manager_task_view', kwargs={'task_id': self.TaskID.id})
 
