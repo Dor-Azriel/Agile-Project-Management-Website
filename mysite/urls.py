@@ -19,7 +19,7 @@ from django.urls import path,include
 from pages.views import task_views, task_sorted_by_date, home_view, task_sorted_by_done, task_detail, \
     dynamic_view, logd_view, DevlopHome_views, SubTasksPerTask_view, SubTaskComment_view, MessagePage_view, \
     manager_views, ClientHome_views, work_done, manager_views_projects, manager_views_sprints, manager_task_view, \
-    manager_subtask_view, logout_view,ClientSprint_view
+    manager_subtask_view, logout_view,ClientSprint_view,Client_Task_per_Sprint
 from django.contrib.auth.views import LoginView, LogoutView
 from work.views import add_comment, update_comment, update_task, add_task, add_sprint, update_sprint, add_project, \
     add_sprint_task, add_subtask, update_subtask, subtask_delete, task_delete, delete_sprint, send_message
@@ -55,6 +55,7 @@ urlpatterns = [
 
     path('accounts/profile/',logd_view, name='logd_view'),
     path('accounts/profile/client/<int:id>/', ClientSprint_view, name="ClientSprint_view"),
+    path('accounts/profile/client/<int:id>/<int:sprint_id>/', Client_Task_per_Sprint, name="Client_Task_per_Sprint"),
     path('accounts/profile/client/',ClientHome_views,name="ClientHome_views"),
     path('accounts/profile/Messages/',MessagePage_view),
     path('Devlop/',DevlopHome_views,name='DevlopHome_views'),
