@@ -38,7 +38,7 @@ User = get_user_model()
 class UserTest(TestCase):
 
     def setUp(self):
-        user_a = User(username='joe', email='joe@gmail.com')
+        user_a = User(username='Admin', email='joe@gmail.com')
         user_a_pw = 'something123'
         user_a.is_staff = True
         user_a.is_superuser = True
@@ -62,7 +62,7 @@ class UserTest(TestCase):
         )
     def test_login_url(self):
         login_url = "/login/"
-        data = {"username": "joe", "password": "something123"}
+        data = {"username": "Admin", "password": "something123"}
         response = self.client.post(login_url, data, follow=True)
 
         status_code = response.status_code
@@ -71,6 +71,39 @@ class UserTest(TestCase):
         self.assertEqual(status_code, 200)
 
 
+
+class MangerTest(TestCase):
+
+    def setUp(self):
+        user_b = User(username='Manager', email='joe@gmail.com')
+        user_b_pw = 'something123'
+        user_b_gr = 'projectManager'
+        user_b.is_staff = False
+        user_b.is_superuser = False
+        user_b.is_active = True
+        user_b.get_group_permissions(user_b_gr)
+        user_b.save()
+        user_b.set_password('something123')
+        user_b.set_password(user_b_pw)
+        self.user_b = user_b
+
+    def test_manager_exists(self):
+        user_count = User.objects.all().count()
+        self.assertEqual(user_count, 1)
+        print(user_count)
+
+    def test_manager_password(self):
+        self.assertTrue(
+            self.user_b.check_password("something123")
+        )
+
+    def test_manager_login_url(self):
+        login_url = "/login/"
+        data = {"username": "Manager", "password": "something123"}
+        response = self.client.post(login_url, data, follow=True)
+
+        status_code = response.status_code
+        self.assertEqual(status_code, 200)
 
 
 
