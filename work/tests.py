@@ -41,7 +41,37 @@ class Test_Model_User(TestCase):
         self.user = User.objects.create(username='Admin1', email='joe@gmail.com', is_staff=True, is_superuser=True,
                                         password='something123')
 
-    def testUSER(self):
+    def test_user_1(self):
         user = User.objects.create(username='Admin1', email='joe@gmail.com', is_staff=True, is_superuser=True,
                                    password='something123')
         self.assertEqual(user.username, 'Admin1')
+
+    def test_user_2(self):
+        user = User.objects.create(username='Admin1', email='joe@gmail.com', is_staff=True, is_superuser=True,
+                                  password='something123')
+        self.assertEqual(user.email, 'joe@gmail.com')
+
+    def test_user_3(self):
+        user = User.objects.create(username='Admin1', email='joe@gmail.com', is_staff=True, is_superuser=True,
+                                  password='something123')
+        self.assertEqual(user.password, 'something123')
+
+    def test_user_4(self):
+        user = User.objects.create(username='Admin1', email='joe@gmail.com', is_staff=True, is_superuser=True,
+                                  password='something123')
+        self.assertTrue(user.is_staff)
+
+    def test_user_5(self):
+        user = User.objects.create(username='Admin1', email='joe@gmail.com', is_staff=True, is_superuser=True,
+                                  password='something123')
+        self.assertTrue(user.is_superuser)
+
+    def test_user_6(self):
+        user = User.objects.create(username='Admin1', email='joe@gmail.com', is_staff=True, is_superuser=True,
+                                  password='something123', is_active=True)
+        self.assertTrue(user.is_active)
+
+    
+
+
+
