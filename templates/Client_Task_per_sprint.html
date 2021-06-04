@@ -1,0 +1,59 @@
+{% extends "Base.html" %}
+{% block content %}
+
+        <h4>{{ route }}</h4>
+        <article class="media content-section">
+          <div class="media-body">
+              <div class="article-metadata">
+               <small >   <a class="text-muted">{{ sprint.StartTime|date:"F d, Y" }}</a>
+                <a class="text-muted"> - </a>
+              <a class="text-muted">{{ sprint.endTime|date:"F d, Y" }}</a></small>
+                  <small class="text-muted">  </small>
+            </div>
+            <h4>{{ sprint.SprintName }}</h4>
+
+            <p class="article-content">{{ sprint.Descripion }}</p>
+            <p><a class="mr-2" >Sprint Cost - {{ sprint.cost }} ₪ </a></p>
+            <p><a class="mr-2" >Project Number  - {{ sprint.projectnum }} ₪ </a></p>
+              <a class="mr-2" >Tasks Done : {{ pro.totalTask }}  </a>
+              <p></p>
+              <div class="progress">
+      <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated " role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: {{sprint.count}}%">{{sprint.count}}</div>
+            </div>
+    <a class="mr-2" >Budget :  </a>
+<div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width:{{sprint.budg}}%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">{{sprint.budg}}</div>
+             </div>
+
+        </article>
+{#    -------------------------------------------------------------#}
+<h4><center>Tasks</center></h4>
+    {% for task in tasks %}
+        <article class="media content-section">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="#">{{ task.TaskId.inCharge }}</a>
+              <small class="text-muted">{{ task.TaskId.startTime|date:"F d, Y" }}</small>
+                <small class="text-muted"> - </small>
+              <small class="text-muted">{{ task.TaskId.endTime|date:"F d, Y" }}</small>
+            </div>
+            <h4><a class="article-title" href="#">{{ task.TaskId.TaskName }}</a></h4>
+              <p>
+              <p class="article-content">{{ task.TaskId.Description }}</p>
+                <p><a class="mr-2" >Task Cost - {{ task.TaskId.cost }} ₪ </a></p>
+                  <div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"  aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width: {{task.TaskId.workDone}}%">{{task.TaskId.workDone}}%</div>
+              </div>
+                </div>
+
+        </article>
+    {% endfor %}
+
+
+{#    -------------------------------------------------------------#}
+
+
+
+
+
+{% endblock content %}

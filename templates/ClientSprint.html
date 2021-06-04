@@ -15,14 +15,14 @@
                 <small class="text-muted"> - </small>
               <small class="text-muted">{{ sprint.endTime|date:"F d, Y" }}</small>
             </div>
-            <h4><a class="article-title" href="#">{{ sprint.SprintName }}</a></h4>
+            <h4><a class="article-title" href={% url 'Client_Task_per_Sprint'  sprint.projectnum.id sprint.id %}>{{ sprint.SprintName }}</a></h4>
             <p class="article-content">{{ sprint.Descripion }}</p>
               <p></p>
               <a class="mr-2" >Tasks Done : {{ pro.totalTask }}  </a>
 
                 <p></p>
                   <div class="progress">
-      <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated " role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: {{sprint.taskDone}}%"></div>
+      <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated " role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: {{sprint.count}}%"></div>
             </div>
               </div>
         </article>
@@ -50,12 +50,11 @@
 {#                   <h4><a class="article-title" href="/Devlop/{{ task.id }}/">{{ task.TaskName }}</a></h4>#}
 {#                 }#}
 {#             </script>#}
-            <h4><a class="article-title" href="/Devlop/{{ task.id }}/">{{ task.TaskName }}</a></h4>
+            <h4><a class="article-title" href="#">{{ task.TaskName }}</a></h4>
             <p class="article-content">{{ task.Description }}</p>
               <div class="progress">
             <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"  aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width: {{task.workDone}}%">{{task.workDone}}%</div>
               </div>
-
                 </div>
 
         </article>
