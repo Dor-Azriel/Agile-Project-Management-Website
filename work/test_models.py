@@ -116,10 +116,43 @@ class DeveloperTest(TestCase):
 
 
 
+class ClientTest(TestCase):
+
+    def setUp(self):
+        user_d = User(username='Client', email='Developer@gmail.com')
+        user_d_gr = 'Client'
+        user_d.is_staff = False
+        user_d.is_superuser = False
+        user_d.is_active = True
+        user_d.get_group_permissions(user_d_gr)
+        user_d.save()
+        user_d.set_password('something123')
+        self.user_d = user_d
 
 
+    def test_client_exists(self):
+        user_count = User.objects.all().count()
+        self.assertEqual(user_count, 1)
+        print(user_count)
+
+    def test_client_password(self):
+        self.assertTrue(
+            self.user_d.check_password("something123")
+        )
+
+    def test_client_login_logout_url(self):
+        login_url = "/login/"
+        data = {"username": "Client", "password": "something123"}
+        response = self.client.post(login_url, data, follow=True)
+        status_code = response.status_code
+        self.assertEqual(status_code, 200)
+
+        response = self.client.get(reverse('logout'), follow=True)
+        status_code = response.status_code
+        self.assertEqual(status_code, 200)
 
 
+    
 
 
 
