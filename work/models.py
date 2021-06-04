@@ -79,6 +79,10 @@ class Task(models.Model):
         self.inSprint = True
         self.save()
 
+    def removeFromSprint(self):
+        self.inSprint = False
+        self.save()
+
 
 class Sprint_Project(models.Model):
     ProjectId = models.ForeignKey(project, on_delete=models.CASCADE)
@@ -110,6 +114,10 @@ class SubTask(models.Model):
     def get_absolute_url(self):
         return reverse('manager_task_view', kwargs={'task_id': self.TaskID.id})
 
+    def workIsDone(self):
+        self.workDone = 100
+        self.save()
+
 
 class Comment(models.Model):
     Subtask = models.ForeignKey(SubTask, related_name='comments', on_delete=models.CASCADE)
@@ -125,7 +133,7 @@ class Comment(models.Model):
         return self.user
 
     def get_absolute_url(self):
-        return reverse('SubTaskComment_view', kwargs={'id': self.Subtask.TaskID.id, 'my_id': self.Subtask.id})
+        return reverse('SubTaskComment_view', kwargs={'my_id': self.Subtask.id})
 
 
 class review(models.Model):

@@ -28,11 +28,13 @@
               <p></p><small class="text-muted">Send : {{ comment.created|date:"F d, Y" }}</small></p>
             <p class="article-content">{{ comment.body }}</p>
 
-              </div>
-             <a href="{% url 'comment-update' comment.pk %}">Update Comment</a>
+
+            <a href="{% url 'comment-update' comment.pk %}">Update Comment</a>
+            <p></p>
+             <a href="{% url 'comment-delete' sub_task.pk comment.pk %}">Delete Comment</a>
+          </div>
         </article>
     {% endfor %}
 
     <a href="{% url 'comment-create'  sub_task.pk %}">Leave Comment</a>
-
 {% endblock content %}

@@ -64,6 +64,12 @@ class update_comment(UpdateView, LoginRequiredMixin):
     fields = ['body']
 
 
+class delete_comment(DeleteView, LoginRequiredMixin):
+    model = Comment
+    fields = '__all__'
+
+    def get_success_url(self):
+        return reverse_lazy('manager_subtask_view', kwargs={'sub_task_id': self.kwargs['subtask_id']})
 
 
 class add_task(CreateView, ):
@@ -101,32 +107,33 @@ class task_delete(DeleteView):
 
 class add_sprint(CreateView, LoginRequiredMixin):
     model = Sprint
-    fields = '__all__'
+    fields = ['SprintName', 'Descripion', 'StartTime', 'endTime', 'cost']
 
-    def form_valid(self, form):
-        p = form.cleaned_data['projectnum']
-        proj = get_object_or_404(project, pk=self.kwargs['pk'])
-        if p != proj:
-            raise forms.ValidationError("You have to choose." + proj.__str__())
-        return super().form_valid(form)
+    def get_form_kwargs(self):
+        kwargs = super(add_sprint, self).get_form_kwargs()
+        if kwargs['instance'] is None:
+            kwargs['instance'] = Sprint()
+        kwargs['instance'].projectnum = get_object_or_404(project, pk=self.kwargs['pk'])
+        print(kwargs)
+        return kwargs
 
-    def get_initial(self, *args, **kwargs):
-        initial = super(add_sprint, self).get_initial(**kwargs)
-        p = get_object_or_404(project, pk=self.kwargs['pk'])
-        initial['projectnum'] = p
-        return initial
+    # def form_valid(self, form):
+    #     p = form.cleaned_data['projectnum']
+    #     proj = get_object_or_404(project, pk=self.kwargs['pk'])
+    #     if p != proj:
+    #         raise forms.ValidationError("You have to choose." + proj.__str__())
+    #     return super().form_valid(form)
+    #
+    # def get_initial(self, *args, **kwargs):
+    #     initial = super(add_sprint, self).get_initial(**kwargs)
+    #     p = get_object_or_404(project, pk=self.kwargs['pk'])
+    #     initial['projectnum'] = p
+    #     return initial
 
 
 class update_sprint(UpdateView, LoginRequiredMixin):
     model = Sprint
-    fields = '__all__'
-
-    def form_valid(self, form):
-        p = form.cleaned_data['projectnum']
-        proj = get_object_or_404(project, pk=self.kwargs['pk'])
-        if p != proj:
-            raise forms.ValidationError("You have to choose." + proj.__str__())
-        return super().form_valid(form)
+    fields = ['SprintName', 'Descripion', 'StartTime', 'endTime', 'cost']
 
 
 class delete_sprint(DeleteView):
@@ -147,28 +154,30 @@ def send_message(request, project_id):
 
 class add_project(CreateView, LoginRequiredMixin):
     model = project
-    fields = '__all__'
+    fields = ['ProjectName', 'Description', 'endTime', 'client',
+              'Budget', 'currentBudgeSchedule', 'MoneySpends']
 
-    def form_valid(self, form):
-        u = str(form.cleaned_data['manager'])
-        user = str(self.request.user)
-        if u != user:
-            raise forms.ValidationError("You have to use your name.")
-        return super().form_valid(form)
-
-    def get_initial(self, *args, **kwargs):
-        initial = super(add_project, self).get_initial(**kwargs)
-        initial['manager'] = self.request.user
-        return initial
-    # def __init__(self, *args, **kwargs):
-    #     super(add_project, self).__init__(*args, **kwargs)
-    #     self.fields['client'] = User.objects.filter(groups__name__in='client')
-    # -------------------    letapel becclinet
+    def get_form_kwargs(self):
+        kwargs = super(add_project, self).get_form_kwargs()
+        if kwargs['instance'] is None:
+            kwargs['instance'] = project()
+        kwargs['instance'].manager = self.request.user
+        print(kwargs)
+        return kwargs
 
 
 class update_project(UpdateView, LoginRequiredMixin):
     model = project
+    fields = ['ProjectName', 'Description', 'endTime', 'client',
+              'Budget', 'currentBudgeSchedule', 'MoneySpends']
+
+
+class delete_project(DeleteView, LoginRequiredMixin):
+    model = project
     fields = '__all__'
+
+    def get_success_url(self):
+        return reverse('manager', kwargs={})
 
 
 class InputForm(forms.Form):
@@ -202,3 +211,29 @@ class add_sprint_task(CreateView, ):
         print(s)
         initial['SpirntId'] = s
         return initial
+
+
+class delete_sprint_task(DeleteView, ):
+    model = Sprint_Task
+    fields = '__all__'
+
+    def delete(self):
+        print('zsdfsdfsdfd')
+        super(delete_sprint_task, self).delete()
+
+    def get_success_url(self):
+        print('aaaaaaaaaaaa')
+        return reverse_lazy('manager_views_sprints', kwargs={'sprint_id': self.kwargs['sprint']})
+
+
+def work_done_sub(request, my_id):
+    sub_task = get_object_or_404(SubTask, id=my_id)
+    sub_task.workIsDone()
+    return redirect('SubTaskComment_view', my_id)
+
+
+def read_bool(request, my_id):
+    print('my_id')
+    m = get_object_or_404(Messages, id=my_id)
+    m.isRead()
+    return redirect('MessagePage_view')

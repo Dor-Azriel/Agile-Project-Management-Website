@@ -15,12 +15,12 @@ from work.views import InputForm, add_project
 
 
 def home_view(request, *args, **kwargs):
-    return render(request, "StartPage.html",);
+    return render(request, "StartPage.html", );
 
 
 def logout_view(request):
     logout(request)
-    return render(request, "StartPage.html",)
+    return render(request, "StartPage.html", )
 
 
 def logd_view(request):
@@ -35,20 +35,22 @@ def logd_view(request):
     elif username[0].name == 'projectManager':
         return redirect('manager')
 
+
 def ClientSprint_view(request, id):
     spri = Sprint.objects.all().filter(projectnum=id)
     tasks = Task.objects.all().filter(projectnum=id, inSprint=False)
     for s in spri:
-        s.taskDone=0
-        j=0
+        s.taskDone = 0
+        j = 0
         if Sprint_Task.objects.all().filter(SpirntId=s.id):
-            ts=Sprint_Task.objects.all().filter(SpirntId=s.id)
+            ts = Sprint_Task.objects.all().filter(SpirntId=s.id)
             for t in ts:
-                if Task.objects.all().filter(id=t.id,workDone=100):
-                    j+=1
-            s.taskDone=j/Sprint_Task.objects.all().filter(SpirntId=s.id).count()*100
+                if Task.objects.all().filter(id=t.id, workDone=100):
+                    j += 1
+            s.taskDone = j / Sprint_Task.objects.all().filter(SpirntId=s.id).count() * 100
 
-    return render(request, "ClientSprint.html", {'sprints': spri,'tasks': tasks })
+    return render(request, "ClientSprint.html", {'sprints': spri, 'tasks': tasks})
+
 
 def MessagePage_view(request):
     list = Messages.objects.all().filter(reciver=request.user.id, readConf=False).order_by("date")
@@ -61,7 +63,7 @@ def manager_views(request):
     obj2 = {'name': request.user.username}
     for p in obj:
         if p.currentBudgeSchedule and p.Budget:
-            p.stat= p.currentBudgeSchedule/p.Budget*100
+            p.stat = p.currentBudgeSchedule / p.Budget * 100
 
     return render(request, "manager_home.html", {'projects': obj, 'name': obj2})
 
@@ -70,9 +72,10 @@ def manager_views_projects(request, project_id):
     tasks = Task.objects.all().filter(projectnum=project_id, inSprint=False)
     sprints = Sprint.objects.all().filter(projectnum=project_id)
     p = get_object_or_404(project, id=project_id)
-    p.count=0
-    if Task.objects.all().filter(projectnum=project_id,workDone=100):
-         p.count= Task.objects.all().filter(projectnum=project_id,workDone=100).count()/Task.objects.all().filter(projectnum=project_id).count()*100
+    p.count = 0
+    if Task.objects.all().filter(projectnum=project_id, workDone=100):
+        p.count = Task.objects.all().filter(projectnum=project_id, workDone=100).count() / Task.objects.all().filter(
+            projectnum=project_id).count() * 100
     route = 'project'
     return render(request, "manager_project_view.html", {'tasks': tasks, 'sprints': sprints, 'p': p, 'route': route})
 
@@ -106,17 +109,17 @@ def manager_task_view(request, task_id):
 
 
 def manager_subtask_view(request, sub_task_id):
-
     sub_task = get_object_or_404(SubTask, id=sub_task_id)
     task = sub_task.TaskID
     comments = Comment.objects.filter(Subtask=sub_task_id)
     print(comments)
     return render(request, "manager_subtask_view.html", {'sub_task': sub_task, 'comments': comments, 'task': task})
 
-def SubTaskComment_view(request, id, my_id):
+
+def SubTaskComment_view(request, my_id):
     obj = get_object_or_404(SubTask, id=my_id)
     obj2 = Comment.objects.filter(Subtask=my_id)
-    print(obj.pk)
+    print('my_id')
     if request.user.groups.all()[0].name == "Developer":
         return render(request, "SubTaskComment.html", {'task': obj, 'comments': obj2, })
     return redirect('manager_subtask_view', my_id)
@@ -134,7 +137,8 @@ def ClientHome_views(request):
     for p in pro:
         p.Scheduled = p.currentBudgeSchedule / p.Budget * 100
         p.Balance = p.MoneySpends / p.Budget * 100
-        if Task.objects.all().filter(projectnum=p.id, workDone=100).count() and Task.objects.all().filter(projectnum=p.id).count():
+        if Task.objects.all().filter(projectnum=p.id, workDone=100).count() and Task.objects.all().filter(
+                projectnum=p.id).count():
             p.taskDone = Task.objects.all().filter(projectnum=p.id, workDone=100).count() / Task.objects.all().filter(
                 projectnum=p.id).count() * 100
         else:

@@ -11,6 +11,7 @@
             <h5><a class="article-title" href="#">{{ task.Subject }}</a></h5>
             <p class="article-content">{{ task.message }}</p>
               </div>
+            <a href="{% url 'read-bool' task.id %}">mark as read</a>
         </article>
     {% endfor %}
 

@@ -18,6 +18,9 @@ class Messages(models.Model):
     Subject= models.CharField(max_length=300, null=False)
     readConf= models.BooleanField(default=False)
 
+    def isRead(self):
+        self.readConf = True
+        self.save()
 
 
 def Send_Conected(sender,user,request,**kwargs):
