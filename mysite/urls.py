@@ -19,12 +19,12 @@ from django.urls import path, include
 from pages.views import task_views, task_sorted_by_date, home_view, task_sorted_by_done, task_detail, \
     dynamic_view, logd_view, DevlopHome_views, SubTasksPerTask_view, SubTaskComment_view, MessagePage_view, \
     manager_views, ClientHome_views, work_done, manager_views_projects, manager_views_sprints, manager_task_view, \
-    manager_subtask_view, logout_view, ClientSprint_view
+    manager_subtask_view, logout_view, ClientSprint_view,Client_Task_per_Sprint
 from django.contrib.auth.views import LoginView, LogoutView
 from work.views import add_comment, update_comment, update_task, add_task, add_sprint, update_sprint, add_project, \
     add_sprint_task, add_subtask, update_subtask, subtask_delete, task_delete, delete_sprint, send_message, \
     delete_comment, delete_project, update_project, work_done_sub, read_bool, delete_sprint_task
-
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 'manager_views_sprints'
 urlpatterns = [
     path('<int:id>', work_done, name='work_done'),
@@ -57,7 +57,7 @@ urlpatterns = [
     path('accounts/profile/client/', ClientHome_views, name="ClientHome_views"),
     path('Devlop/', DevlopHome_views, name='DevlopHome_views'),
     path('Devlop/<int:id>/', SubTasksPerTask_view, name='SubTasksPerTask_view'),
-
+    path('accounts/profile/client/<int:id>/<int:sprint_id>/', Client_Task_per_Sprint, name="Client_Task_per_Sprint"),
 
     path('comment/<int:pk>/new/', add_comment.as_view(), name='comment-create'),
     path('comment/<int:pk>/update/', update_comment.as_view(), name='comment-update'),
@@ -93,3 +93,5 @@ urlpatterns = [
     path('accounts/profile/Messages/', MessagePage_view, 'messages'),
     path('sprint_task/<int:pk>/<int:sprint>/<int:taskid>delete/', delete_sprint_task.as_view(), name='sprint_task-delete'),
 ]
+
+urlpatterns += staticfiles_urlpatterns()

@@ -31,7 +31,7 @@
               <h5><a class="article-title" href="{% url 'manager_subtask_view' sub_task.id %}">{{ sub_task.TaskName }}</a></h5>
             <p class="article-content">{{ sub_task.Description }}</p>
               <div class="progress">
-            <div class="progress-bar" role="progressbar"  aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width: {{task.workDone}}%">{{task.workDone}}%</div>
+            <div class="progress-bar  progress-bar-striped progress-bar-animated" role="progressbar "  aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width: {{sub_task.workDone}}%">{{sub_task.workDone}}%</div>
               </div>
               </div>
         </article>

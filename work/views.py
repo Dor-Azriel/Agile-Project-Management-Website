@@ -18,22 +18,22 @@ from .models import Task
 
 class add_subtask(CreateView, LoginRequiredMixin, ):
     model = SubTask
-    fields = ['startTime', 'endTime', 'encharge', 'lastUpdate', 'cost', 'workDone', 'skillNeed', 'Description']
+    fields = ['TaskName','startTime', 'endTime', 'encharge', 'lastUpdate', 'cost', 'workDone', 'skillNeed', ]
 
     def get_form_kwargs(self):
         kwargs = super(add_subtask, self).get_form_kwargs()
         task = get_object_or_404(Task, pk=self.kwargs['pk'])
         if kwargs['instance'] is None:
             kwargs['instance'] = SubTask()
-        kwargs['instance'].TaskName = task.TaskName
         kwargs['instance'].TaskID = task
+        kwargs['instance'].Description = str(task.id) + " - " +task.TaskName
         print(kwargs)
         return kwargs
 
 
 class update_subtask(UpdateView, LoginRequiredMixin, ):
     model = SubTask
-    fields = ['startTime', 'endTime', 'encharge', 'lastUpdate', 'cost', 'workDone', 'skillNeed', 'Description']
+    fields = ['TaskName','startTime', 'endTime', 'encharge', 'lastUpdate', 'cost', 'workDone', 'skillNeed', ]
 
 
 class subtask_delete(DeleteView):
@@ -74,8 +74,7 @@ class delete_comment(DeleteView, LoginRequiredMixin):
 
 class add_task(CreateView, ):
     model = Task
-    fields = ['startTime', 'endTime', 'inCharge', 'workDone', 'lastUpdate', 'cost', 'TaskName', 'Description',
-              ]
+    fields = ['TaskName','startTime', 'endTime', 'inCharge', 'workDone', 'lastUpdate', 'cost', 'Description' ]
 
     def get_form_kwargs(self):
         kwargs = super(add_task, self).get_form_kwargs()
@@ -88,7 +87,7 @@ class add_task(CreateView, ):
 
 class update_task(UpdateView, LoginRequiredMixin):
     model = Task
-    fields = ['startTime', 'endTime', 'inCharge', 'workDone', 'lastUpdate', 'cost', 'TaskName', 'Description',
+    fields = ['TaskName','startTime', 'endTime', 'inCharge', 'workDone', 'lastUpdate', 'cost', 'Description',
               ]
 
 
@@ -107,7 +106,7 @@ class task_delete(DeleteView):
 
 class add_sprint(CreateView, LoginRequiredMixin):
     model = Sprint
-    fields = ['SprintName', 'Descripion', 'StartTime', 'endTime', 'cost']
+    fields = ['SprintName', 'StartTime', 'endTime', 'cost', 'Descripion']
 
     def get_form_kwargs(self):
         kwargs = super(add_sprint, self).get_form_kwargs()
@@ -133,7 +132,7 @@ class add_sprint(CreateView, LoginRequiredMixin):
 
 class update_sprint(UpdateView, LoginRequiredMixin):
     model = Sprint
-    fields = ['SprintName', 'Descripion', 'StartTime', 'endTime', 'cost']
+    fields = ['SprintName', 'StartTime', 'endTime', 'cost', 'Descripion']
 
 
 class delete_sprint(DeleteView):
@@ -154,8 +153,8 @@ def send_message(request, project_id):
 
 class add_project(CreateView, LoginRequiredMixin):
     model = project
-    fields = ['ProjectName', 'Description', 'endTime', 'client',
-              'Budget', 'currentBudgeSchedule', 'MoneySpends']
+    fields = ['ProjectName', 'endTime', 'client',
+              'Budget', 'currentBudgeSchedule', 'MoneySpends', 'Description']
 
     def get_form_kwargs(self):
         kwargs = super(add_project, self).get_form_kwargs()
@@ -168,8 +167,8 @@ class add_project(CreateView, LoginRequiredMixin):
 
 class update_project(UpdateView, LoginRequiredMixin):
     model = project
-    fields = ['ProjectName', 'Description', 'endTime', 'client',
-              'Budget', 'currentBudgeSchedule', 'MoneySpends']
+    fields = ['ProjectName', 'endTime', 'client',
+              'Budget', 'currentBudgeSchedule', 'MoneySpends', 'Description']
 
 
 class delete_project(DeleteView, LoginRequiredMixin):
@@ -186,19 +185,23 @@ class InputForm(forms.Form):
 
 class add_sprint_task(CreateView, ):
     model = Sprint_Task
-    fields = '__all__'
+    fields = ['TaskId']
+
+    def get_form_kwargs(self):
+        kwargs = super(add_sprint_task, self).get_form_kwargs()
+        if kwargs['instance'] is None:
+            kwargs['instance'] = Sprint_Task()
+        kwargs['instance'].SpirntId = get_object_or_404(Sprint, pk=self.kwargs['sprint'])
+        print(kwargs)
+        return kwargs
 
     def form_valid(self, form):
-        s = form.cleaned_data['SpirntId']
         sprint = get_object_or_404(Sprint, pk=self.kwargs['sprint'])
-        tasks = Task.objects.all().filter(projectnum=self.kwargs['p'])
-        tasks = tasks.filter(inSprint=True)
+        tasks = Task.objects.all().filter(projectnum=self.kwargs['p'], inSprint=True)
         t = form.cleaned_data['TaskId']
         if t in tasks:
             raise forms.ValidationError("This task already in sprint.")
-        if s != sprint:
-            raise forms.ValidationError("You have to choose." + sprint.__str__())
-        if t not in tasks and s == sprint:
+        if t not in tasks:
             print('inser to sprint')
             t.inserted_to_sprint()
             print(t.inSprint)

@@ -16,15 +16,16 @@ from work.views import InputForm, add_project
 
 
 def home_view(request, *args, **kwargs):
-    username = request.user.groups.all()
-    if request.user.groups.all():
-        if username[0].name == 'client':
-            return redirect('ClientHome_views')
-        elif username[0].name == 'Developer':
-            return redirect('DevlopHome_views')
-        elif username[0].name == 'projectManager':
-            return redirect('manager')
-    return render(request, "StartPage.html", )
+    # username = request.user.groups.all()
+    # if request.user.groups.all():
+    #     if username[0].name == 'client':
+    #         return redirect('ClientHome_views')
+    #     elif username[0].name == 'Developer':
+    #         return redirect('DevlopHome_views')
+    #     elif username[0].name == 'projectManager':
+    #         return redirect('manager')
+    msgcount = Messages.objects.all().filter(reciver=request.user.id, readConf=False).count()
+    return render(request, "StartPage.html",{ 'msgcount': msgcount} )
 
 
 def logout_view(request):
@@ -35,6 +36,8 @@ def logout_view(request):
 def logd_view(request):
     username = request.user.groups.all()
     lists = request.user.is_superuser
+    if not username:
+        return render(request, "StartPage.html", )
     if (lists == True):
         return HttpResponseRedirect(reverse('admin:index'))
     elif username[0].name == 'client':
@@ -143,7 +146,7 @@ def SubTaskComment_view(request, my_id):
 
 def DevlopHome_views(request):
     filt = request.user.id
-    obj = Task.objects.all().filter(inCharge=filt);
+    obj = Task.objects.all().filter(inCharge=filt)
     obj2 = {'name': request.user.username}
     msgcount = Messages.objects.all().filter(reciver=request.user.id, readConf=False).count()
     return render(request, "DevlopHome.html", {'tasks': obj, 'name': obj2, 'msgcount': msgcount})
@@ -174,7 +177,8 @@ def ClientSprint_view(request, id):
         for t in tmp:
             if t.TaskId.workDone == 100:
                 s.count += 1
-        s.count = s.count / Sprint_Task.objects.all().filter(SpirntId=s.id).count() * 100
+        if Sprint_Task.objects.all().filter(SpirntId=s.id).count():
+            s.count = s.count / Sprint_Task.objects.all().filter(SpirntId=s.id).count() * 100
     msgcount = Messages.objects.all().filter(reciver=request.user.id, readConf=False).count()
     return render(request, "ClientSprint.html", {'tasks': tasks, 'sprints': sprints, 'msgcount': msgcount})
 
@@ -189,10 +193,11 @@ def Client_Task_per_Sprint(request, id, sprint_id):
         if t.TaskId.workDone == 100:
             sprint.count += 1
             sprint.budg += t.TaskId.cost
-    sprint.count = sprint.count / Sprint_Task.objects.all().filter(SpirntId=sprint.id).count() * 100
+    if Sprint_Task.objects.all().filter(SpirntId=sprint.id).count():
+        sprint.count = sprint.count / Sprint_Task.objects.all().filter(SpirntId=sprint.id).count() * 100
     if sprint.cost:
         sprint.budg = sprint.budg / sprint.cost * 100
-        msgcount = Messages.objects.all().filter(reciver=request.user.id, readConf=False).count()
+    msgcount = Messages.objects.all().filter(reciver=request.user.id, readConf=False).count()
     return render(request, "Client_Task_per_sprint.html",
                   {'tasks': tasks, 'sprint': sprint, 'msgcount': msgcount})
 

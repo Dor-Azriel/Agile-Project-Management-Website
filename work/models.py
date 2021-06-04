@@ -27,7 +27,6 @@ class skill(models.Model):
 
 class project(models.Model):
     ProjectName = models.CharField(max_length=300, null=False)
-    Description = models.CharField(max_length=500, null=True)
     startTime = models.DateField(null=False, auto_now=True)
     endTime = models.DateField(null=False)
     client = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -35,6 +34,7 @@ class project(models.Model):
     Budget = models.FloatField(null=False, default=0)
     currentBudgeSchedule = models.FloatField(null=False, default=0)
     MoneySpends = models.FloatField(null=False, default=0)
+    Description = models.TextField(max_length=500, null=True)
 
     def __str__(self):
         return self.id.__str__() + " " + self.ProjectName
@@ -45,7 +45,7 @@ class project(models.Model):
 
 class Sprint(models.Model):
     SprintName = models.CharField(max_length=300, null=False)
-    Descripion = models.CharField(max_length=300, null=False)
+    Descripion = models.TextField(max_length=300, null=False)
     StartTime = models.DateTimeField(null=False)
     endTime = models.DateTimeField(null=False)
     projectnum = models.ForeignKey(project, on_delete=models.CASCADE)
@@ -66,7 +66,7 @@ class Task(models.Model):
     lastUpdate = models.DateTimeField(null=False)
     cost = models.FloatField(null=False, default=0)
     TaskName = models.CharField(max_length=300, null=False)
-    Description = models.CharField(max_length=500, null=True)
+    Description = models.TextField(max_length=500, null=True)
     projectnum = models.ForeignKey(project, on_delete=models.CASCADE)
     inSprint = models.BooleanField(default=False)
 
@@ -107,7 +107,7 @@ class SubTask(models.Model):
     workDone = models.IntegerField(default=1, validators=[MaxValueValidator(100), MinValueValidator(0)])
     skillNeed = models.ForeignKey(skill, on_delete=models.CASCADE)
     TaskName = models.CharField(max_length=300, null=False)
-    Description = models.CharField(max_length=500, null=True)
+    Description = models.TextField(max_length=500, null=True)
     TaskID = models.ForeignKey(Task, on_delete=models.CASCADE)
 
     def __str__(self):

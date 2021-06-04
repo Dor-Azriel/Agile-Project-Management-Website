@@ -36,10 +36,34 @@ def Send_Conected(sender,user,request,**kwargs):
                                                    Subject="Reminder")
                         msg.save()
                         task.lastUpdate=datetime.date(datetime.now())
+                    if task.endTime - datetime.date(datetime.now()) == timedelta(days=1)  :
+                        msg=Messages.objects.create(message="One day left to complete task - "+task.TaskName,reciver=user,sender="System Message",
+                                                   Subject="Reminder")
+                        msg.save()
+                        task.lastUpdate=datetime.date(datetime.now())
+                    if task.endTime - datetime.date(datetime.now()) == timedelta(days=0)  :
+                        msg=Messages.objects.create(message="No time left to complete task - "+task.TaskName,reciver=user,sender="System Message",
+                                                   Subject="Reminder")
+                        msg.save()
+                        task.lastUpdate=datetime.date(datetime.now())
 
                 return render(request, "DevlopHome.html")
 
             if groups[0].name == 'client':
+                projects= project.objects.all().filter(client=user.id)
+                for pro in projects:
+                    if pro.Budget-pro.MoneySpends <= 0:
+                        msg = Messages.objects.create(message="Project " + pro.ProjectName + ", out of Budget.",
+                                                     reciver=user, sender="System Message",
+                                                     Subject="Alert")
+                        msg.save()
+                    if pro.Budget-pro.currentBudgeSchedule < pro.Budget*0.25:
+                        msg = Messages.objects.create(message="Project " + pro.ProjectName + " have 25% Budget left as scheduled.",
+                                                     reciver=user, sender="System Message",
+                                                     Subject="Alert")
+                        msg.save()
+                return render(request, "ClientHome.html")
+            if groups[0].name == 'projectManager':
                 projects= project.objects.all().filter(client=user.id)
                 for pro in projects:
                     if pro.Budget-pro.MoneySpends <= 0:

@@ -8,7 +8,9 @@
                <a class="text-muted">{{ sprint.StartTime|date:"F d, Y" }}</a>
                 <a class="text-muted"> - </a>
               <a class="text-muted">{{ sprint.endTime|date:"F d, Y" }}</a>
+              <p></p>
             <p class="article-content">{{ sprint.Descripion }}</p>
+
             <p><a class="mr-2" >Sprint Cost - {{ sprint.cost }} ₪ </a></p>
             <p><a class="mr-2" >Project Number  - {{ sprint.projectnum }} ₪ </a></p>
               <div class="article-metadata">
@@ -31,9 +33,9 @@
             </div>
             <h4><a class="article-title" href="{% url 'manager_task_view' task.TaskId.id %}">{{ task.TaskId.TaskName }}</a></h4>
               <p>
-                <article class="media content-section">
+
                         <a href="{% url 'sprint_task-delete' task.pk sprint.pk task.TaskId.id  %}">remove task from sprint</a>
-                </article>
+
                 </div>
               </p>
         </article>
