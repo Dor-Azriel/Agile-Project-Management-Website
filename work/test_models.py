@@ -152,7 +152,61 @@ class ClientTest(TestCase):
         self.assertEqual(status_code, 200)
 
 
+    def test_client_login_massageview(self):
+        login_url = "/login/"
+        data = {"username": "Client", "password": "something123"}
+
+        response = self.client.post(login_url, data, follow=True)
+        status_code = response.status_code
+        self.assertEqual(status_code, 200)
+
+        response = self.client.get(reverse('MessagePage_view'), follow=True)
+        status_code = response.status_code
+        self.assertEqual(status_code, 200)
+
+
+
+
+
+
+class UserTest(TestCase):
+
+    def setUp(self):
+        user_a = User(username='Admin', email='joe@gmail.com')
+        user_a_pw = 'something123'
+        user_a.is_staff = True
+        user_a.is_superuser = True
+        user_a.save()
+        user_a.set_password('something123')
+        user_a.set_password(user_a_pw)
+        self.user_a = user_a
+
+    def test_user_exists(self):
+        user_count = User.objects.all().count()
+        self.assertEqual(user_count, 1)
+        print(user_count)
+
+    def test_user_password(self):
+        # user_qs = User.objects.filter(username_iexact="joe")
+        # user_exists = user_qs.exists() and user_qs.count() == 1
+        self.assertTrue(
+            self.user_a.check_password("something123")
+        )
+
+    def test_login_logout_url(self):
+        login_url = "/login/"
+        data = {"username": "Admin", "password": "something123"}
+        response = self.client.post(login_url, data, follow=True)
+        status_code = response.status_code
+        self.assertEqual(status_code, 200)
+
+        response = self.client.get(reverse('logout'), follow=True)
+        status_code = response.status_code
+        self.assertEqual(status_code, 200)
     
+
+
+
 
 
 
