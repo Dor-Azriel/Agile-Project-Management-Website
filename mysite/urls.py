@@ -33,6 +33,8 @@ urlpatterns = [
     path('manager/', manager_views, name='manager'),
     path('manager/<int:project_id>', manager_views_projects, name='manager_views_projects'),
     path('manager/sprint/<int:sprint_id>', manager_views_sprints, name='manager_views_sprints'),
+    path('manager/sprint/<int:sprint_id>/<int:tid>/<int:need_to_delete>', manager_views_sprints,
+         name='manager_views_sprints'),
     path('manager/task/<int:task_id>', manager_task_view, name='manager_task_view'),
     path('manager/sub_task/<int:sub_task_id>', manager_subtask_view, name='manager_subtask_view'),
 
@@ -89,5 +91,5 @@ urlpatterns = [
     path('mmm/<int:my_id>/', read_bool, name='read-bool'),
     path('Devlop/Devlop/<int:my_id>/', SubTaskComment_view, name='SubTaskComment_view'),
     path('accounts/profile/Messages/', MessagePage_view, 'messages'),
-    path('sprint_task/<int:sprint>/<int:pk>/delete/', delete_sprint_task.as_view(), name='sprint_task-delete'),
+    path('sprint_task/<int:pk>/<int:sprint>/<int:taskid>delete/', delete_sprint_task.as_view(), name='sprint_task-delete'),
 ]

@@ -37,7 +37,7 @@ class project(models.Model):
     MoneySpends = models.FloatField(null=False, default=0)
 
     def __str__(self):
-        return  self.id.__str__()+" " +self.ProjectName
+        return self.id.__str__() + " " + self.ProjectName
 
     def get_absolute_url(self):
         return reverse('manager', kwargs={})
@@ -52,7 +52,7 @@ class Sprint(models.Model):
     cost = models.FloatField(null=False, default=0)
 
     def __str__(self):
-        return self.projectnum.id.__str__() +"-"+ self.id.__str__()+" " +self.SprintName
+        return self.projectnum.id.__str__() + "-" + self.id.__str__() + " " + self.SprintName
 
     def get_absolute_url(self):
         return reverse('manager_views_projects', kwargs={'project_id': self.projectnum.id})
@@ -71,7 +71,8 @@ class Task(models.Model):
     inSprint = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.projectnum.id.__str__() +"-"+ self.id.__str__()+" " +self.TaskName
+        return self.projectnum.id.__str__() + "-" + self.id.__str__() + " " + self.TaskName
+
     def get_absolute_url(self):
         return reverse('manager_views_projects', kwargs={'project_id': self.projectnum.id})
 
@@ -110,7 +111,8 @@ class SubTask(models.Model):
     TaskID = models.ForeignKey(Task, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.TaskID.id.__str__() +"-"+ self.id.__str__()+" " +self.TaskName
+        return self.TaskID.id.__str__() + "-" + self.id.__str__() + " " + self.TaskName
+
     def get_absolute_url(self):
         return reverse('manager_task_view', kwargs={'task_id': self.TaskID.id})
 
@@ -190,7 +192,6 @@ def SubTask_Update(sender, instance, update_fields, **kwargs):
 
 
 pre_save.connect(SubTask_Update, sender=SubTask)
-
 
 # def Task_Update(sender, instance, **kwargs):
 #     if Task.objects.filter(id=instance.id):

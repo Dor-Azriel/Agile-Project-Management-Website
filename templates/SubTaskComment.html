@@ -12,6 +12,7 @@
             </div>
             <h5><a class="article-title" href="#">{{ task.TaskName }}</a></h5>
             <p class="article-content">{{ task.Description }}</p>
+              <a href="{% url 'work_done_sub' task.pk %}">work done</a>
 
                       <div class="progress">
             <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"  aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width: {{task.workDone}}%">{{task.workDone}}%</div>

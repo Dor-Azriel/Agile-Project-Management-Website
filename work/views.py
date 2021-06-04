@@ -217,13 +217,11 @@ class delete_sprint_task(DeleteView, ):
     model = Sprint_Task
     fields = '__all__'
 
-    def delete(self):
-        print('zsdfsdfsdfd')
-        super(delete_sprint_task, self).delete()
 
     def get_success_url(self):
         print('aaaaaaaaaaaa')
-        return reverse_lazy('manager_views_sprints', kwargs={'sprint_id': self.kwargs['sprint']})
+        return reverse_lazy('manager_views_sprints', kwargs={'sprint_id': self.kwargs['sprint'],
+                    'tid':self.kwargs['taskid'], 'need_to_delete': 1})
 
 
 def work_done_sub(request, my_id):

@@ -32,7 +32,7 @@
             <h4><a class="article-title" href="{% url 'manager_task_view' task.TaskId.id %}">{{ task.TaskId.TaskName }}</a></h4>
               <p>
                 <article class="media content-section">
-                        <a href="{% url 'sprint_task-delete' sprint.pk task.pk %}">remove task from sprint</a>
+                        <a href="{% url 'sprint_task-delete' task.pk sprint.pk task.TaskId.id  %}">remove task from sprint</a>
                 </article>
                 </div>
               </p>
