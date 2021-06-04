@@ -37,7 +37,7 @@ class Testskill(TestCase):
 
 class Test_Model_User(TestCase):
 
-    def setup(self):
+    def test_inituser(self):
         self.user = User.objects.create(username='Admin1', email='joe@gmail.com', is_staff=True, is_superuser=True,
                                         password='something123')
 
@@ -71,7 +71,7 @@ class Test_Model_User(TestCase):
                                   password='something123', is_active=True)
         self.assertTrue(user.is_active)
 
-    
+
 
 
 
