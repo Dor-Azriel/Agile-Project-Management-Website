@@ -1,5 +1,7 @@
 {% extends "Base.html" %}
 {% block content %}
+<article class="media content-section">
+          <div class="media-body">
 
     <h2>{{ object.title }}</h2>
 <form action="" method="POST">
@@ -9,7 +11,7 @@
         {% for field in form %}
     <div class="fieldWrapper">
         {{ field.errors }}
-        {{ field.label_tag }} {{ field }}
+        {{ field.label_tag }} <p>{{ field }}</p>
         {% if field.help_text %}
         <p class="help">{{ field.help_text|safe }}</p>
         {% endif %}
@@ -18,6 +20,8 @@
     </div>
     <input type="submit" name="Submit">
 </form>
+                  </div>
+        </article>
 
 {% endblock content %}
 
