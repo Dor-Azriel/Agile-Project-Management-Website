@@ -45,6 +45,7 @@ pipeline {
                 steps {
               withEnv(["HOME=${env.WORKSPACE}"]) {
                 sh ' pip install pytest-cov'
+                sh'ls -l'
                 sh'python -m py.test -cov /work/tests.py'
             }
             //step( currentBuild.result = 'SUCCESS')
