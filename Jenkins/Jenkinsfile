@@ -41,15 +41,7 @@ pipeline {
         }
         }
 
-        stage('pyTest') {
-                steps {
-              withEnv(["HOME=${env.WORKSPACE}"]) {
-                sh ' pip install pytest-cov'
-                sh'python -m py.test -cov '
-            }
-            //step( currentBuild.result = 'SUCCESS')
-          }
-            }
+        
 
     }
 
