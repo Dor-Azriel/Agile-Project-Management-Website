@@ -1,20 +1,9 @@
 from work.models import skill
-from work.models import review
-from work.models import Task
-from datetime import datetime
+
 from django.contrib.auth.models import User
-from work.models import SubTask
-from work.models import Sprint
-from work.models import Conclusions
-from work.models import project
-from work.models import review
-from django.urls import resolve, reverse
-from django.test import TestCase, tag
-from django.core.files import File
-from django.contrib.auth import get_user_model
-from django.conf import settings
-#from mysite import urls, settings
-from pages import views
+
+from django.test import TestCase
+
 
 class Testskill(TestCase):
 
